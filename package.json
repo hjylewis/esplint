@@ -4,21 +4,28 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.{js,json,md}": ["prettier --write", "git add"]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hjylewis/esplint.git"
   },
-  "keywords": [
-    "eslint",
-    "javascript",
-    "linter"
-  ],
+  "keywords": ["eslint", "javascript", "linter"],
   "author": "hjylewis",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/hjylewis/esplint/issues"
   },
-  "homepage": "https://github.com/hjylewis/esplint#readme"
+  "homepage": "https://github.com/hjylewis/esplint#readme",
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "lint-staged": "^7.0.0",
+    "prettier": "^1.11.1"
+  },
+  "dependencies": {
+    "commander": "^2.14.1"
+  }
 }
