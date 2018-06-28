@@ -4,16 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "test": "jest"
   },
   "lint-staged": {
-    "*.{js,json,md}": ["prettier --write", "git add"]
+    "*.{js,json,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hjylewis/esplint.git"
   },
-  "keywords": ["eslint", "javascript", "linter"],
+  "keywords": [
+    "eslint",
+    "javascript",
+    "linter"
+  ],
   "author": "hjylewis",
   "license": "ISC",
   "bugs": {
@@ -21,11 +29,15 @@
   },
   "homepage": "https://github.com/hjylewis/esplint#readme",
   "devDependencies": {
+    "eslint": "^5.0.1",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-jest": "^21.17.0",
     "husky": "^0.14.3",
-    "lint-staged": "^7.0.0",
-    "prettier": "^1.11.1"
+    "jest": "^23.2.0",
+    "lint-staged": "^7.2.0",
+    "prettier": "^1.13.6"
   },
-  "dependencies": {
-    "commander": "^2.14.1"
+  "peerDependencies": {
+    "eslint": "4.x.x || 5.x.x"
   }
 }
