@@ -1,8 +1,11 @@
 const {
   combineFileSets,
   compareFileSets,
-  createFileSet
+  createFileSet,
+  cleanUpFileSet
 } = require("../lib/fileSet");
+const fs = require("fs");
+jest.mock("fs");
 
 describe("combineFileSets", () => {
   it("combines FileSets", () => {
@@ -61,29 +64,43 @@ describe("compareFileSets", () => {
 
     expect(result).toHaveLength(1);
   });
+
+  it("returns nothing is old fileSet doesn't exist", () => {
+    const result = compareFileSets(null, {
+      "bar.js": {
+        rule: 1
+      }
+    });
+
+    expect(result).toHaveLength(0);
+  });
 });
 
 describe("createFileSet", () => {
+  process.cwd = () => "/absolute/path";
+
   it("counts rule violations per file", () => {
-    process.cwd = () => "/absolute/path";
-    const result = createFileSet([
-      {
-        filePath: "/absolute/path/foo.js",
-        messages: [
-          { ruleId: "rule1" },
-          { ruleId: "rule1" },
-          { ruleId: "rule1" }
-        ]
-      },
-      {
-        filePath: "/absolute/path/bar.js",
-        messages: [
-          { ruleId: "rule1" },
-          { ruleId: "rule2" },
-          { ruleId: "rule3" }
-        ]
-      }
-    ]);
+    const result = createFileSet(
+      [
+        {
+          filePath: "/absolute/path/foo.js",
+          messages: [
+            { ruleId: "rule1" },
+            { ruleId: "rule1" },
+            { ruleId: "rule1" }
+          ]
+        },
+        {
+          filePath: "/absolute/path/bar.js",
+          messages: [
+            { ruleId: "rule1" },
+            { ruleId: "rule2" },
+            { ruleId: "rule3" }
+          ]
+        }
+      ],
+      ["rule1", "rule2", "rule3"]
+    );
 
     expect(result).toEqual({
       "foo.js": {
@@ -94,6 +111,88 @@ describe("createFileSet", () => {
         rule2: 1,
         rule3: 1
       }
+    });
+  });
+
+  it("defaults give rules to 0", () => {
+    const result = createFileSet(
+      [
+        {
+          filePath: "/absolute/path/foo.js",
+          messages: [
+            { ruleId: "rule1" },
+            { ruleId: "rule1" },
+            { ruleId: "rule1" }
+          ]
+        },
+        {
+          filePath: "/absolute/path/bar.js",
+          messages: []
+        }
+      ],
+      ["rule1", "rule2"],
+      filename => {
+        return filename === "foo.js" ? ["rule1", "rule2"] : ["rule2"];
+      }
+    );
+
+    expect(result).toEqual({
+      "foo.js": {
+        rule1: 3,
+        rule2: 0
+      },
+      "bar.js": {
+        rule2: 0
+      }
+    });
+  });
+
+  it("only tracks rules specified rules", () => {
+    const result = createFileSet(
+      [
+        {
+          filePath: "/absolute/path/foo.js",
+          messages: [
+            { ruleId: "rule1" },
+            { ruleId: "rule1" },
+            { ruleId: "rule1" }
+          ]
+        },
+        {
+          filePath: "/absolute/path/bar.js",
+          messages: []
+        }
+      ],
+      ["rule1"],
+      filename => {
+        return filename === "foo.js" ? ["rule1", "rule2"] : ["rule2"];
+      }
+    );
+
+    expect(result).toEqual({
+      "foo.js": {
+        rule1: 3
+      },
+      "bar.js": {}
+    });
+  });
+});
+
+describe("cleanUpFileSet", () => {
+  it("strips out files that do not exist", () => {
+    fs.existsSync.mockReturnValueOnce(true);
+    fs.existsSync.mockReturnValueOnce(false);
+    fs.existsSync.mockReturnValueOnce(true);
+
+    const result = cleanUpFileSet({
+      file1: {},
+      file2: {},
+      file3: {}
+    });
+
+    expect(result).toEqual({
+      file1: {},
+      file3: {}
     });
   });
 });

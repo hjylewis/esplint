@@ -10,7 +10,7 @@ describe("compareRuleSets", () => {
     );
 
     expect(result).toHaveLength(1);
-    expect(result[0].type).toBe("warning");
+    expect(result[0].type).toBe("info");
   });
 
   it("returns no warnings otherwise", () => {

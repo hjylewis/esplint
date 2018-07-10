@@ -3,17 +3,7 @@ jest.mock("../package.json", () => ({ version: "1.0.0" }));
 
 describe("createRecord", () => {
   it("attaches current version", () => {
-    const { version } = createRecord();
+    const { version } = createRecord({ config: { rules: [] } });
     expect(version).toEqual("1.0.0");
-  });
-
-  it("combines file sets", () => {
-    const { files } = createRecord(
-      {
-        files: {}
-      },
-      { "foo.js": {} }
-    );
-    expect(files).toEqual({ "foo.js": {} });
   });
 });

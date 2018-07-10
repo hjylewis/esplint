@@ -8,5 +8,8 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2015
   },
-  plugins: ["jest"]
+  plugins: ["jest"],
+  rules: {
+    "no-console": "warn"
+  }
 };
