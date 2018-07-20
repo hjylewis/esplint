@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`engine throws error if eslint error 1`] = `
+"[31mMake sure there aren't any errors before running esplint.[39m
+
+[4m/private/var/folders/d8/lgy7hw9x4lnctw6rjtd0nmx80000gn/T/esplint/fixtures/eslint-error/index.js[24m
+  [2m1:1[22m  [31merror[39m  Unexpected console statement  [2mno-console[22m
+
+[31m[1m✖ 1 problem (1 error, 0 warnings)[22m[39m
+[31m[1m[22m[39m"
+`;
+
+exports[`engine throws error if no esplint config 1`] = `"[31m✖ No config file found.[39m"`;

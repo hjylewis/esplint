@@ -1,21 +1,17 @@
 const { compareRuleSets, createRuleSet } = require("../lib/ruleSet");
 
 describe("compareRuleSets", () => {
-  it("returns warnings if rule has 0 warnings in new ruleSet", () => {
-    const result = compareRuleSets(
-      {
-        rule: 10
-      },
-      {}
-    );
+  it("returns warnings if rule has 0 warnings in ruleSet", () => {
+    const result = compareRuleSets({
+      rule: 0
+    });
 
     expect(result).toHaveLength(1);
     expect(result[0].type).toBe("info");
   });
 
   it("returns no warnings otherwise", () => {
-    expect(compareRuleSets({ rule: 10 }, { rule: 15 })).toHaveLength(0);
-    expect(compareRuleSets({}, { rule: 15 })).toHaveLength(0);
+    expect(compareRuleSets({ rule: 15 })).toHaveLength(0);
   });
 });
 
