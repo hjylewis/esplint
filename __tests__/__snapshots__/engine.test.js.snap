@@ -1,5 +1,19 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`engine prints error if increase in eslint warnings 1`] = `
+Object {
+  "message": "Warnings of [1m\\"no-console\\"[22m have increase by +1 in \\"index.js\\"",
+  "type": "error",
+}
+`;
+
+exports[`engine returns message about turning off warning when count is zero 1`] = `
+Object {
+  "message": "🎉  No [1m\\"no-console\\"[22m warnings are being reported. You can turn it on as an error!",
+  "type": "info",
+}
+`;
+
 exports[`engine throws error if eslint error 1`] = `
 "[31mMake sure there aren't any errors before running esplint.[39m
 
