@@ -116,4 +116,22 @@ describe("engine", () => {
 
     resetFixturePath("decrease-warning-zero");
   });
+
+  it("cleans up record by deleting removed files", () => {
+    const fixturePath = getFixturePath("delete-file");
+    process.chdir(fixturePath);
+    const { run } = require("../lib/engine");
+
+    const { results, hasError } = run({}, ["."]);
+    expect(hasError).toEqual(false);
+    expect(results).toHaveLength(0);
+
+    const recordPath = path.join(fixturePath, ".esplint.rec.json");
+    const record = JSON.parse(
+      stripJsonComments(fs.readFileSync(recordPath, "utf8"))
+    );
+    expect(record.files["not-index.js"]).toEqual(undefined);
+
+    resetFixturePath("delete-file");
+  });
 });
