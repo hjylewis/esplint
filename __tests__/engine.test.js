@@ -8,16 +8,24 @@ log.error = jest.fn();
 log.warn = jest.fn();
 
 const fixtureDir = `${os.tmpdir()}/esplint/fixtures`;
+const fixtureSrc = path.resolve("./__tests__/fixtures");
 const cwd = process.cwd();
 
 function getFixturePath(...args) {
   return path.join(fixtureDir, ...args);
 }
 
+function resetFixturePath(...args) {
+  const dest = path.join(fixtureDir, ...args);
+  const src = path.join(fixtureSrc, ...args);
+
+  execa.sync("cp", ["-fr", `${src}/.`, dest]);
+}
+
 describe("engine", () => {
   beforeAll(() => {
     execa.sync("mkdir", ["-p", fixtureDir]);
-    execa.sync("cp", ["-r", "./__tests__/fixtures/.", fixtureDir]);
+    execa.sync("cp", ["-r", `${fixtureSrc}/.`, fixtureDir]);
   });
 
   afterEach(() => {
