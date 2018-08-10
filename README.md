@@ -4,6 +4,9 @@ A ESLint warning tracker to help introduce rules into a legacy code base
 
 ---
 
+[![npm](https://img.shields.io/npm/v/esplint.svg?style=flat-square)](https://www.npmjs.com/package/esplint)
+[![npm](https://img.shields.io/npm/l/esplint.svg?style=flat-square)](https://github.com/hjylewis/esplint/blob/master/LICENSE)
+
 ## About
 
 Linting is a powerful way to catch bad code and enforce best practices. That said, turning a rule on for an existing project can be difficult. It can surface hidden violations that you must fix before you can use the rule at all.
