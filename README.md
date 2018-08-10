@@ -1,37 +1,73 @@
-# ESplint :face_with_head_bandage:
+# esplint
 
-## Install
+A ESLint warning tracker to help introduce rules into a legacy code base
 
+---
+
+## About
+
+Linting is a powerful way to catch bad code and enforce best practices. That said, turning a rule on for an existing project can be difficult. It can surface hidden violations that you must fix before you can use the rule at all.
+
+Instead, esplint allows you to turn new rules on as “warnings,” and prevent further violations. esplint tracks the number of eslint “warnings” in each file and prevents the number of “warnings” from increasing. When the number of “warnings” decreases, esplint recorders the new lower number. This way you can fix existing, legacy violations over time while avoiding further violations.
+
+## Getting Started
+
+Install esplint as a dev dependency of your project.
+
+```sh
+$ npm install esplint --save-dev
 ```
-npm install esplint --save-dev
+
+Create `.esplintrc.js` and add your [configurations](#configuration).
+
+```js
+module.exports = {
+  surfaceArea: [ ... ],
+  rules: [ ...the rules you wish to track... ]
+};
 ```
 
-### Recommended Usage
+Run
 
-## CLI options
-
+```sh
+$ ./node_modules/.bin/esplint
 ```
-esplint [options] files
 
-Configuration:
-  --enforced  Turn on enforced rules
-  --tidy      Remove unnecessary rules
+This will create a `.esplint.rec.json` record file that stores the number of eslint warnings per file. Add this file to your git repository.
 
-Commands:
-  --init      Create ESplint rules for all failing eslint rules
-  --generate  Generates an .eslintrc file for your editor
+Now add this esplint check to your validation on commit hooks (using [lint-staged](https://github.com/okonet/lint-staged)) or CI.
+
+## Command line options
+
+```sh
+$ ./node_modules/.bin/esplint --help
+
+esplint [options] [file.js] [dir]
+
+Options:
+  --version    Show version number                                     [boolean]
+  --overwrite  ignore existing record file            [boolean] [default: false]
+  --help       Show help                                               [boolean]
 ```
+
+The options are:
+
+- `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
 
 ## Configuration
 
-```
+```js
 // .esplintrc.js
 
 module.exports = {
-  rules: {
-    "rule-thing": {
-      "max": 40,
-    }
-  }
-}
+  surfaceArea: [ ... ],
+  eslint: { ... },
+  rules: [ ... ]
+};
 ```
+
+The options are:
+
+- `surfaceArea` — An array of files and/or directories to track. Use `[ "." ]` to track all Javascript files in the current directory. These files and directories are used if no files or directories are specified from the CLI
+- `eslint` — ESLint [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
+- `rules` — An array of eslint rule names to track.
