@@ -24,6 +24,11 @@ function resetFixturePath(...args) {
   execa.sync("cp", ["-fr", `${src}/.`, dest]);
 }
 
+function readRecord(fixturePath) {
+  const recordPath = path.join(fixturePath, ".esplint.rec.json");
+  return JSON.parse(stripJsonComments(fs.readFileSync(recordPath, "utf8")));
+}
+
 describe("engine", () => {
   beforeAll(() => {
     execa.sync("mkdir", ["-p", fixtureDir]);
@@ -79,10 +84,7 @@ describe("engine", () => {
     expect(hasError).toEqual(false);
     expect(results).toHaveLength(0);
 
-    const recordPath = path.join(fixturePath, ".esplint.rec.json");
-    const record = JSON.parse(
-      stripJsonComments(fs.readFileSync(recordPath, "utf8"))
-    );
+    const record = readRecord(fixturePath);
     expect(record.files["index.js"]["no-console"]).toEqual(1);
 
     resetFixturePath("decrease-warning");
@@ -108,10 +110,7 @@ describe("engine", () => {
     expect(result1).toMatchSnapshot();
 
     // Count set to 0
-    const recordPath = path.join(fixturePath, ".esplint.rec.json");
-    const record = JSON.parse(
-      stripJsonComments(fs.readFileSync(recordPath, "utf8"))
-    );
+    const record = readRecord(fixturePath);
     expect(record.files["index.js"]["no-console"]).toEqual(0);
 
     resetFixturePath("decrease-warning-zero");
@@ -126,12 +125,23 @@ describe("engine", () => {
     expect(hasError).toEqual(false);
     expect(results).toHaveLength(0);
 
-    const recordPath = path.join(fixturePath, ".esplint.rec.json");
-    const record = JSON.parse(
-      stripJsonComments(fs.readFileSync(recordPath, "utf8"))
-    );
+    const record = readRecord(fixturePath);
     expect(record.files["not-index.js"]).toEqual(undefined);
 
     resetFixturePath("delete-file");
   });
+
+  it("ignores eslint rules not listed in config", () => {});
+
+  it("No rules are being tracked. Add some rules to your esplint config.", () => {});
+
+  it(`No files provided, linting full surface area...`, () => {});
+
+  it("is specified in your esplint config but is not a warning in your eslint config.", () => {});
+
+  it("creates new record", () => {});
+
+  it("Overwriting existing the record file...", () => {});
+
+  it("Hashes don't match. Overwriting existing record file...", () => {});
 });

@@ -1,11 +1,9 @@
 # esplint
 
-A ESLint warning tracker to help introduce rules into a legacy code base
-
----
-
 [![npm](https://img.shields.io/npm/v/esplint.svg?style=flat-square)](https://www.npmjs.com/package/esplint)
 [![npm](https://img.shields.io/npm/l/esplint.svg?style=flat-square)](https://github.com/hjylewis/esplint/blob/master/LICENSE)
+
+A ESLint warning tracker to help introduce rules into a legacy code base
 
 ## About
 
