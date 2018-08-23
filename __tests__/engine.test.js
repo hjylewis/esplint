@@ -29,6 +29,15 @@ function readRecord(fixturePath) {
   return JSON.parse(stripJsonComments(fs.readFileSync(recordPath, "utf8")));
 }
 
+function setup(fixtureName, test) {
+  const fixturePath = getFixturePath(fixtureName);
+  return (...args) => {
+    process.chdir(fixturePath);
+    test({ fixturePath }, ...args);
+    resetFixturePath(fixtureName);
+  };
+}
+
 describe("engine", () => {
   beforeAll(() => {
     execa.sync("mkdir", ["-p", fixtureDir]);
@@ -43,105 +52,177 @@ describe("engine", () => {
     execa.sync("rm", ["-r", fixtureDir]);
   });
 
-  it("throws error if no esplint config", () => {
-    const fixturePath = getFixturePath("no-config");
-    process.chdir(fixturePath);
+  it(
+    "throws error if no esplint config",
+    setup("no-config", () => {
+      const { run } = require("../lib/engine");
+      expect(() => {
+        run({}, ["index.js"]);
+      }).toThrowErrorMatchingSnapshot();
+    })
+  );
 
-    const { run } = require("../lib/engine");
-    expect(() => {
-      run({}, ["index.js"]);
-    }).toThrowErrorMatchingSnapshot();
-  });
+  it(
+    "throws error if eslint error",
+    setup("eslint-error", () => {
+      const { run } = require("../lib/engine");
+      expect(() => {
+        run({}, ["index.js"]);
+      }).toThrowErrorMatchingSnapshot();
+    })
+  );
 
-  it("throws error if eslint error", () => {
-    const fixturePath = getFixturePath("eslint-error");
-    process.chdir(fixturePath);
+  it(
+    "prints error if increase in eslint warnings",
+    setup("increase-warning", () => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({}, ["index.js"]);
+      expect(hasError).toEqual(true);
+      expect(results).toHaveLength(1);
+      expect(results[0].type).toEqual("error");
+      expect(results[0]).toMatchSnapshot();
+    })
+  );
 
-    const { run } = require("../lib/engine");
-    expect(() => {
-      run({}, ["index.js"]);
-    }).toThrowErrorMatchingSnapshot();
-  });
-
-  it("prints error if increase in eslint warnings", () => {
-    const fixturePath = getFixturePath("increase-warning");
-    process.chdir(fixturePath);
-
-    const { run } = require("../lib/engine");
-    const { results, hasError } = run({}, ["index.js"]);
-    expect(hasError).toEqual(true);
-    expect(results).toHaveLength(1);
-    expect(results[0].type).toEqual("error");
-    expect(results[0]).toMatchSnapshot();
-  });
-
-  it("no errors and changes record count when warnings decrease", () => {
-    const fixturePath = getFixturePath("decrease-warning");
-    process.chdir(fixturePath);
-
-    const { run } = require("../lib/engine");
-    const { results, hasError } = run({}, ["index.js"]);
-    expect(hasError).toEqual(false);
-    expect(results).toHaveLength(0);
-
-    const record = readRecord(fixturePath);
-    expect(record.files["index.js"]["no-console"]).toEqual(1);
-
-    resetFixturePath("decrease-warning");
-  });
-
-  it("returns message about turning off warning when count is zero", () => {
-    const fixturePath = getFixturePath("decrease-warning-zero");
-    process.chdir(fixturePath);
-    const { run } = require("../lib/engine");
-
-    // Run twice
-    const [result1, result2] = [{}, {}].map(() => {
+  it(
+    "no errors and changes record count when warnings decrease",
+    setup("decrease-warning", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
       const { results, hasError } = run({}, ["index.js"]);
       expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["no-console"]).toEqual(1);
+    })
+  );
+
+  it(
+    "returns message about turning off warning when count is zero",
+    setup("decrease-warning-zero", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+
+      // Run twice
+      const [result1, result2] = [{}, {}].map(() => {
+        const { results, hasError } = run({}, ["index.js"]);
+        expect(hasError).toEqual(false);
+        expect(results).toHaveLength(1);
+        const result = results[0];
+        expect(result.type).toEqual("info");
+        return result;
+      });
+
+      // Get same result
+      expect(result1).toMatchObject(result2);
+      expect(result1).toMatchSnapshot();
+
+      // Count set to 0
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["no-console"]).toEqual(0);
+    })
+  );
+
+  it(
+    "cleans up record by deleting removed files",
+    setup("delete-file", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(record.files["not-index.js"]).toEqual(undefined);
+    })
+  );
+
+  it(
+    "ignores eslint rules not listed in config",
+    setup("no-rules", () => {
+      const { run } = require("../lib/engine");
+
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+    })
+  );
+
+  it(
+    "alerts user when no rules are being tracked",
+    setup("no-rules", () => {
+      const { run } = require("../lib/engine");
+
+      run({}, ["."]);
+      expect(log.warn).toHaveBeenCalledWith(
+        log.createWarning(
+          "No rules are being tracked. Add some rules to your esplint config."
+        )
+      );
+    })
+  );
+
+  it(
+    "lints full surface area when no files are provided",
+    setup("decrease-warning", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+
+      run({}, []);
+      expect(log.log).toHaveBeenCalledWith(
+        `No files provided, linting full surface area...`
+      );
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["no-console"]).toEqual(1);
+    })
+  );
+
+  it(
+    "warns when rule is specified in esplint config but is not a warning in your eslint config",
+    setup("not-a-warning", () => {
+      const { run } = require("../lib/engine");
+
+      const { results } = run({}, ["."]);
       expect(results).toHaveLength(1);
-      const result = results[0];
-      expect(result.type).toEqual("info");
-      return result;
-    });
+      expect(results[0].type).toEqual("warning");
+      expect(results[0]).toMatchSnapshot();
+    })
+  );
 
-    // Get same result
-    expect(result1).toMatchObject(result2);
-    expect(result1).toMatchSnapshot();
+  it(
+    "creates new record when there wasn't one",
+    setup("no-record", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
 
-    // Count set to 0
-    const record = readRecord(fixturePath);
-    expect(record.files["index.js"]["no-console"]).toEqual(0);
+      run({}, ["."]);
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["no-console"]).toEqual(1);
+    })
+  );
 
-    resetFixturePath("decrease-warning-zero");
-  });
+  it(
+    "overwrites existing file is 'overwrite' is passed",
+    setup("increase-warning", () => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({ overwrite: true }, ["index.js"]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+      expect(log.log).toHaveBeenCalledWith(
+        "Overwriting existing the record file..."
+      );
+    })
+  );
 
-  it("cleans up record by deleting removed files", () => {
-    const fixturePath = getFixturePath("delete-file");
-    process.chdir(fixturePath);
-    const { run } = require("../lib/engine");
-
-    const { results, hasError } = run({}, ["."]);
-    expect(hasError).toEqual(false);
-    expect(results).toHaveLength(0);
-
-    const record = readRecord(fixturePath);
-    expect(record.files["not-index.js"]).toEqual(undefined);
-
-    resetFixturePath("delete-file");
-  });
-
-  it("ignores eslint rules not listed in config", () => {});
-
-  it("No rules are being tracked. Add some rules to your esplint config.", () => {});
-
-  it(`No files provided, linting full surface area...`, () => {});
-
-  it("is specified in your esplint config but is not a warning in your eslint config.", () => {});
-
-  it("creates new record", () => {});
-
-  it("Overwriting existing the record file...", () => {});
-
-  it("Hashes don't match. Overwriting existing record file...", () => {});
+  it(
+    "overwrites exisiting record if config hashes don't match",
+    setup("no-hash-match", () => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({}, ["index.js"]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+      expect(log.warn).toHaveBeenCalledWith(
+        log.createWarning(
+          "Hashes don't match. Overwriting existing record file..."
+        )
+      );
+    })
+  );
 });
