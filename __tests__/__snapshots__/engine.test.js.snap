@@ -15,7 +15,7 @@ Object {
 `;
 
 exports[`engine throws error if eslint error 1`] = `
-"[31mMake sure there aren't any errors before running esplint.[39m
+"[31mThere were some ESLint errors. Fix them and try again.[39m
 
 [4m/private/var/folders/d8/lgy7hw9x4lnctw6rjtd0nmx80000gn/T/esplint/fixtures/eslint-error/index.js[24m
   [2m1:1[22m  [31merror[39m  Unexpected console statement  [2mno-console[22m
