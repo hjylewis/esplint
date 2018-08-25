@@ -24,7 +24,7 @@
     "linter"
   ],
   "author": "hjylewis",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/hjylewis/esplint/issues"
   },

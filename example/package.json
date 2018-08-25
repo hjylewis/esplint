@@ -1,0 +1,22 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "description": "",
+  "bin": "index.js",
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "esplint",
+      "git add .esplint.rec.json",
+      "git add"
+    ]
+  },
+  "repository": {},
+  "devDependencies": {
+    "eslint": "^5.0.0",
+    "esplint": "^0.1.0",
+    "lint-staged": "^7.2.0"
+  }
+}

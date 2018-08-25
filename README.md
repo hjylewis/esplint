@@ -38,6 +38,29 @@ This will create a `.esplint.rec.json` record file that stores the number of esl
 
 Now add this esplint check to your validation on commit hooks (using [lint-staged](https://github.com/okonet/lint-staged)) or CI.
 
+Here's an example using lint-staged:
+
+```js
+// package.json
+
+{
+  ...
+  "scripts": {
+    "precommit": "lint-staged"
+  },
+  "lint-staged": {
+    "*.js": [
+      "esplint",
+      "git add .esplint.rec.json",
+      "git add"
+    ]
+  },
+  ...
+}
+```
+
+See a full example [here](example).
+
 ## Command line options
 
 ```sh
