@@ -66,9 +66,20 @@ describe("engine", () => {
     "throws error if eslint error",
     setup("eslint-error", () => {
       const { run } = require("../lib/engine");
-      expect(() => {
+      try {
         run({}, ["index.js"]);
-      }).toThrowErrorMatchingSnapshot();
+        expect("This should never be reached").toEqual(false);
+      } catch (e) {
+        const error = e.toString();
+        expect(error).toEqual(
+          expect.stringContaining(
+            "There were some ESLint errors. Fix them and try again."
+          )
+        );
+        expect(error).toEqual(
+          expect.stringContaining("Unexpected console statement")
+        );
+      }
     })
   );
 
