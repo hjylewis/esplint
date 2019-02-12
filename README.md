@@ -51,8 +51,7 @@ Here's an example using lint-staged:
   "lint-staged": {
     "*.js": [
       "esplint",
-      "git add .esplint.rec.json",
-      "git add"
+      "git add .esplint.rec.json"
     ]
   },
   ...
