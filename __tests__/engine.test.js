@@ -236,4 +236,30 @@ describe("engine", () => {
       );
     })
   );
+
+  it(
+    "adds a new file with no error",
+    setup("new-file", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(record.files["newFile.js"]["no-console"]).toEqual(0);
+    })
+  );
+
+  it(
+    "sorts files",
+    setup("sorts-files", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(Object.keys(record.files)).toEqual(["a.js", "b.js", "z.js"]);
+    })
+  );
 });

@@ -195,4 +195,16 @@ describe("cleanUpFileSet", () => {
       file3: {}
     });
   });
+
+  it("sorts the keys", () => {
+    fs.existsSync.mockReturnValue(true);
+
+    const result = cleanUpFileSet({
+      "z/a/c": {},
+      "b/b/c": {},
+      "a/b/c": {}
+    });
+
+    expect(Object.keys(result)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);
+  });
 });

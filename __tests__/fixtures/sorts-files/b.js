@@ -1,0 +1,3 @@
+function newFile() {}
+
+newFile();
