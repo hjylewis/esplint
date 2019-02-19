@@ -1,7 +1,7 @@
 {
   "name": "esplint",
   "version": "0.1.0",
-  "description": "",
+  "description": "A ESLint warning tracker to help introduce rules into a legacy code base",
   "bin": "index.js",
   "scripts": {
     "precommit": "lint-staged",
