@@ -251,6 +251,16 @@ describe("engine", () => {
   );
 
   it(
+    "errors if new file has error",
+    setup("new-file-with-error", () => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(true);
+      expect(results).toHaveLength(1);
+    })
+  );
+
+  it(
     "sorts files",
     setup("sorts-files", ({ fixturePath }) => {
       const { run } = require("../lib/engine");
