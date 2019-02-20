@@ -210,6 +210,17 @@ describe("engine", () => {
   );
 
   it(
+    "throws error if record is not valid json",
+    setup("invalid-record", () => {
+      const { run } = require("../lib/engine");
+
+      expect(() => {
+        run({}, ["."]);
+      }).toThrowErrorMatchingSnapshot();
+    })
+  );
+
+  it(
     "overwrites existing file is 'overwrite' is passed",
     setup("increase-warning", () => {
       const { run } = require("../lib/engine");
