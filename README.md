@@ -10,7 +10,7 @@ A ESLint warning tracker to help introduce rules into a legacy code base
 
 Linting is a powerful way to catch bad code and enforce best practices. That said, turning a rule on for an existing project can be difficult. It can surface hidden violations that you must fix before you can use the rule at all.
 
-Instead, esplint allows you to turn new rules on as “warnings,” and prevent further violations. esplint tracks the number of eslint “warnings” in each file and prevents the number of “warnings” from increasing. When the number of “warnings” decreases, esplint recorders the new lower number. This way you can fix existing, legacy violations over time while avoiding further violations.
+Instead, esplint allows you to turn new rules on as “warnings,” and prevent further violations. esplint tracks the number of eslint “warnings” in each file and prevents the number of “warnings” from increasing. When the number of “warnings” decreases, esplint records the new lower number. This way you can fix existing, legacy violations over time while avoiding further violations.
 
 ## Getting Started
 
