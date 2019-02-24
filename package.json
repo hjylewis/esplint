@@ -6,7 +6,8 @@
   "scripts": {
     "precommit": "lint-staged",
     "prepush": "npm test",
-    "test": "jest"
+    "test": "jest",
+    "version": "node ./scripts/postversion.js"
   },
   "lint-staged": {
     "*.{js,json,md}": [
