@@ -14,6 +14,13 @@ Object {
 }
 `;
 
+exports[`engine still makes checks if "write" option is false 1`] = `
+Object {
+  "message": "Warnings of [1m\\"no-console\\"[22m have increase by +1 in \\"index.js\\"",
+  "type": "error",
+}
+`;
+
 exports[`engine throws error if no esplint config 1`] = `"[31m✖ No config file found.[39m"`;
 
 exports[`engine throws error if record is not valid json 1`] = `"[31m✖ .esplint.rec.json is not valid JSON. Please fix and try again.[39m"`;

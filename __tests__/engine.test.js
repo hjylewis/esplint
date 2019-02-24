@@ -283,4 +283,30 @@ describe("engine", () => {
       expect(Object.keys(record.files)).toEqual(["a.js", "b.js", "z.js"]);
     })
   );
+
+  it(
+    'does not update record if "write" option is false',
+    setup("decrease-warning", ({ fixturePath }) => {
+      const { run } = require("../lib/engine");
+
+      run({ write: false }, []);
+      expect(log.log).toHaveBeenCalledWith(
+        `No files provided, linting full surface area...`
+      );
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["no-console"]).toEqual(2);
+    })
+  );
+
+  it(
+    'still makes checks if "write" option is false',
+    setup("increase-warning", () => {
+      const { run } = require("../lib/engine");
+      const { results, hasError } = run({ write: false }, ["index.js"]);
+      expect(hasError).toEqual(true);
+      expect(results).toHaveLength(1);
+      expect(results[0].type).toEqual("error");
+      expect(results[0]).toMatchSnapshot();
+    })
+  );
 });

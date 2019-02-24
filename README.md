@@ -63,7 +63,7 @@ See a full example [here](example).
 
 ## Command line options
 
-```sh
+```
 $ ./node_modules/.bin/esplint --help
 
 esplint [options] [file.js] [dir]
@@ -71,12 +71,14 @@ esplint [options] [file.js] [dir]
 Options:
   --version    Show version number                                     [boolean]
   --overwrite  ignore existing record file            [boolean] [default: false]
+  --no-write   do not update record file               [boolean] [default: false]
   --help       Show help                                               [boolean]
 ```
 
 The options are:
 
 - `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
+- `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 
 ## Configuration
 
@@ -86,7 +88,8 @@ The options are:
 module.exports = {
   surfaceArea: [ ... ],
   eslint: { ... },
-  rules: [ ... ]
+  rules: [ ... ],
+  write: true,
 };
 ```
 
@@ -95,3 +98,4 @@ The options are:
 - `surfaceArea` — An array of files and/or directories to track. Use `[ "." ]` to track all Javascript files in the current directory. These files and directories are used if no files or directories are specified from the CLI
 - `eslint` — ESLint cli (CLIEngine) [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
 - `rules` — An array of eslint rule names to track.
+- `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
