@@ -134,6 +134,27 @@ describe("engine", () => {
   );
 
   it(
+    "should message about turning off warning when count is zero because a file was deleted",
+    setup("decrease-warning-zero-delete-file", () => {
+      const { run } = require("../../lib/engine");
+
+      // Run twice
+      const [result1, result2] = [{}, {}].map(() => {
+        const { results, hasError } = run({}, ["index.js"]);
+        expect(hasError).toEqual(false);
+        expect(results).toHaveLength(1);
+        const result = results[0];
+        expect(result.type).toEqual("info");
+        return result;
+      });
+
+      // Get same result
+      expect(result1).toMatchObject(result2);
+      expect(result1).toMatchSnapshot();
+    })
+  );
+
+  it(
     "cleans up record by deleting removed files",
     setup("delete-file", ({ fixturePath }) => {
       const { run } = require("../../lib/engine");

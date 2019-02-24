@@ -2,7 +2,8 @@ const {
   combineFileSets,
   compareFileSets,
   createFileSet,
-  cleanUpFileSet
+  cleanUpDeletedFilesInFileSet,
+  sortFileSet
 } = require("../lib/fileSet");
 const fs = require("fs");
 jest.mock("fs");
@@ -178,13 +179,13 @@ describe("createFileSet", () => {
   });
 });
 
-describe("cleanUpFileSet", () => {
+describe("cleanUpDeletedFilesInFileSet", () => {
   it("strips out files that do not exist", () => {
     fs.existsSync.mockReturnValueOnce(true);
     fs.existsSync.mockReturnValueOnce(false);
     fs.existsSync.mockReturnValueOnce(true);
 
-    const result = cleanUpFileSet({
+    const result = cleanUpDeletedFilesInFileSet({
       file1: {},
       file2: {},
       file3: {}
@@ -195,11 +196,13 @@ describe("cleanUpFileSet", () => {
       file3: {}
     });
   });
+});
 
+describe("sortFileSet", () => {
   it("sorts the keys", () => {
     fs.existsSync.mockReturnValue(true);
 
-    const result = cleanUpFileSet({
+    const result = sortFileSet({
       "z/a/c": {},
       "b/b/c": {},
       "a/b/c": {}
