@@ -14,10 +14,18 @@ beforeEach(() => {
     hasError: false
   }));
 
+  process.argv = [];
   process.exit.mockReset();
   log.error.mockReset();
   log.log.mockReset();
   log.warn.mockReset();
+});
+
+it("should strip ignore first two arguments of process.argv", () => {
+  process.argv = ["node", "esplint", "foo.js", "bar/baz.js"];
+  cli();
+
+  expect(run).toHaveBeenCalledWith(expect.anything(), ["foo.js", "bar/baz.js"]);
 });
 
 it("should pass files to engine", () => {
