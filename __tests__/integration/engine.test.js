@@ -4,6 +4,8 @@ const execa = require("execa");
 const log = require("../../lib/log");
 const fs = require("fs");
 const stripJsonComments = require("strip-json-comments");
+const stripAnsi = require("strip-ansi");
+const { version } = require("../../package.json");
 
 log.log = jest.fn();
 log.error = jest.fn();
@@ -328,6 +330,48 @@ describe("engine", () => {
       expect(results).toHaveLength(1);
       expect(results[0].type).toEqual("error");
       expect(results[0]).toMatchSnapshot();
+    })
+  );
+
+  it(
+    "should throw error if record version is newer and record file changes",
+    setup("new-version-decrease-warning", () => {
+      const { run } = require("../../lib/engine");
+
+      try {
+        run({}, ["."]);
+        expect("It should never get here").toBe(false);
+      } catch (e) {
+        expect(stripAnsi(e.message)).toEqual(
+          `✖ You are using an older version of esplint (${version}) than what was used to create .esplint.rec.json (1000.0.0).\nMake sure to upgrade so you're on the same version.`
+        );
+      }
+    })
+  );
+
+  it(
+    "should succeed even if record version is newer if record file does NOT change",
+    setup("new-version-no-change", ({ fixturePath }) => {
+      const { run } = require("../../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(record.version).toEqual("1000.0.0");
+    })
+  );
+
+  it(
+    "should succeed and update if record version is older regardless if there's no change",
+    setup("old-version-no-change", ({ fixturePath }) => {
+      const { run } = require("../../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      const record = readRecord(fixturePath);
+      expect(record.version).not.toEqual("0.0.0");
     })
   );
 });
