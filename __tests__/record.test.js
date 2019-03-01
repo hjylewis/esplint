@@ -11,9 +11,15 @@ describe("createRecord", () => {
     const { files } = createRecord({
       config: { rules: [] },
       files: {
-        "z/a/c": {},
-        "b/b/c": {},
-        "a/b/c": {}
+        "z/a/c": {
+          rule: 1
+        },
+        "b/b/c": {
+          rule: 1
+        },
+        "a/b/c": {
+          rule: 1
+        }
       }
     });
     expect(Object.keys(files)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);

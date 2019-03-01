@@ -37,6 +37,8 @@ $ ./node_modules/.bin/esplint
 
 This will create a `.esplint.rec.json` record file that stores the number of eslint warnings per file. Add this file to your git repository.
 
+> NOTE: This record file will only include files _with_ warnings. If a file is included in the esplint "surfaceArea" but not present in the record file then it has none of the tracked warnings.
+
 Now add this esplint check to your validation on commit hooks (using [lint-staged](https://github.com/okonet/lint-staged)) or CI.
 
 Here's an example using lint-staged:

@@ -129,9 +129,9 @@ describe("engine", () => {
       expect(result1).toMatchObject(result2);
       expect(result1).toMatchSnapshot();
 
-      // Count set to 0
+      // Hide file
       const record = readRecord(fixturePath);
-      expect(record.files["index.js"]["no-console"]).toEqual(0);
+      expect(record.files["index.js"]).toEqual(undefined);
     })
   );
 
@@ -210,18 +210,6 @@ describe("engine", () => {
   );
 
   it(
-    "warns when rule is specified in esplint config but is not a warning in your eslint config",
-    setup("not-a-warning", () => {
-      const { run } = require("../../lib/engine");
-
-      const { results } = run({}, ["."]);
-      expect(results).toHaveLength(1);
-      expect(results[0].type).toEqual("warning");
-      expect(results[0]).toMatchSnapshot();
-    })
-  );
-
-  it(
     "creates new record when there wasn't one",
     setup("no-record", ({ fixturePath }) => {
       const { run } = require("../../lib/engine");
@@ -272,15 +260,18 @@ describe("engine", () => {
   );
 
   it(
-    "adds a new file with no error",
+    "handles new file with no error",
     setup("new-file", ({ fixturePath }) => {
       const { run } = require("../../lib/engine");
-      const { results, hasError } = run({}, ["."]);
+      const { results, hasError } = run({}, ["newFile.js"]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
 
       const record = readRecord(fixturePath);
-      expect(record.files["newFile.js"]["no-console"]).toEqual(0);
+      expect(record.files["newFile.js"]).toEqual(undefined);
+      expect(record.files["index.js"]).toEqual({
+        "no-console": 1
+      });
     })
   );
 
@@ -298,7 +289,7 @@ describe("engine", () => {
     "sorts files",
     setup("sorts-files", ({ fixturePath }) => {
       const { run } = require("../../lib/engine");
-      const { results, hasError } = run({}, ["."]);
+      const { results, hasError } = run({ overwrite: true }, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
 
@@ -372,6 +363,41 @@ describe("engine", () => {
 
       const record = readRecord(fixturePath);
       expect(record.version).not.toEqual("0.0.0");
+    })
+  );
+
+  it(
+    "should hide warnings when there are no violations in a file",
+    setup("decrease-warning-hide-rule", ({ fixturePath }) => {
+      const { run } = require("../../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(1);
+      expect(results[0].type).toEqual("info");
+      expect(stripAnsi(results[0].message)).toEqual(
+        'No "for-direction" warnings are being reported. You can turn it on as an error!'
+      );
+
+      // Hide warning
+      const record = readRecord(fixturePath);
+      expect(record.files["index.js"]["for-direction"]).toEqual(undefined);
+    })
+  );
+
+  it(
+    "should hide file if no longer has violations",
+    setup("decrease-warning-in-other-file", ({ fixturePath }) => {
+      const { run } = require("../../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+
+      // Hide file
+      const record = readRecord(fixturePath);
+      expect(record.files["other.js"]).toEqual(undefined);
+      expect(record.files["index.js"]).toEqual({
+        "no-console": 1
+      });
     })
   );
 });

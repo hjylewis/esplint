@@ -31,10 +31,3 @@ Object {
 exports[`engine throws error if no esplint config 1`] = `"[31m✖ No config file found.[39m"`;
 
 exports[`engine throws error if record is not valid json 1`] = `"[31m✖ .esplint.rec.json is not valid JSON. Please fix and try again.[39m"`;
-
-exports[`engine warns when rule is specified in esplint config but is not a warning in your eslint config 1`] = `
-Object {
-  "message": "[1m\\"no-console\\"[22m is specified in your esplint config but is not a warning in your eslint config.",
-  "type": "warning",
-}
-`;
