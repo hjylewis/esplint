@@ -3,3 +3,8 @@ node_js:
   - "10"
   - "9"
   - "8"
+env:
+  - ESLINT_VERSION=5
+  - ESLINT_VERSION=4
+before_script:
+  - npm i eslint@$ESLINT_VERSION --no-save
