@@ -1,0 +1,10 @@
+{
+  "version": "0.3.0",
+  "hash": "119be9453c3998b726c7787fe9337957df1f7315",
+  "files": {
+    "index.js": {
+      "no-console": 1,
+      "for-direction": 1
+    }
+  }
+}

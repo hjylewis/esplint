@@ -17,20 +17,32 @@ describe("compareRuleSets", () => {
 
 describe("createRuleSet", () => {
   it("combines the rule sets", () => {
-    const result = createRuleSet({
-      file1: {
-        rule1: 5,
-        rule3: 10
+    const result = createRuleSet(
+      {
+        file1: {
+          rule1: 5,
+          rule3: 10
+        },
+        file2: {
+          rule1: 2,
+          rule2: 1
+        }
       },
-      file2: {
-        rule1: 2,
-        rule2: 1
-      }
-    });
+      ["rule1", "rule2", "rule3"]
+    );
     expect(result).toEqual({
       rule1: 7,
       rule2: 1,
       rule3: 10
+    });
+  });
+
+  it("includes all rules regardless of their presence in the fileSet", () => {
+    const result = createRuleSet({}, ["rule1", "rule2", "rule3"]);
+    expect(result).toEqual({
+      rule1: 0,
+      rule2: 0,
+      rule3: 0
     });
   });
 });

@@ -3,6 +3,7 @@ const {
   compareFileSets,
   createFileSet,
   cleanUpDeletedFilesInFileSet,
+  cleanUpWarninglessFilesInFileSet,
   sortFileSet
 } = require("../lib/fileSet");
 const fs = require("fs");
@@ -194,6 +195,54 @@ describe("cleanUpDeletedFilesInFileSet", () => {
     expect(result).toEqual({
       file1: {},
       file3: {}
+    });
+  });
+});
+
+describe("cleanUpWarninglessFilesInFileSet", () => {
+  it("strips out files that do not have warnings", () => {
+    const result = cleanUpWarninglessFilesInFileSet({
+      file1: {
+        rule1: 0,
+        rule2: 0
+      },
+      file2: {},
+      file3: {
+        rule1: 1,
+        rule2: 1
+      }
+    });
+
+    expect(result).toEqual({
+      file3: {
+        rule1: 1,
+        rule2: 1
+      }
+    });
+  });
+
+  it("strips out warnings that have no violations", () => {
+    const result = cleanUpWarninglessFilesInFileSet({
+      file1: {
+        rule1: 0,
+        rule2: 1
+      },
+      file2: {},
+      file3: {
+        rule1: 0,
+        rule2: 1,
+        rule3: 3
+      }
+    });
+
+    expect(result).toEqual({
+      file1: {
+        rule2: 1
+      },
+      file3: {
+        rule2: 1,
+        rule3: 3
+      }
     });
   });
 });
