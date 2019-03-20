@@ -63,24 +63,39 @@ Here's an example using lint-staged:
 
 See a full example [here](example).
 
-## Command line options
+## Command line
 
 ```
 $ ./node_modules/.bin/esplint --help
 
-esplint [options] [file.js] [dir]
+esplint
+
+Run check and update record
+esplint [options] file.js [file.js] [dir]
+
+Commands:
+  esplint        Run check and update record                          [default]
+  esplint stats  Print stats about eslint violations
 
 Options:
   --version    Show version number                                     [boolean]
-  --overwrite  ignore existing record file            [boolean] [default: false]
-  --no-write   do not update record file               [boolean] [default: false]
   --help       Show help                                               [boolean]
+  --overwrite  Ignore existing record file            [boolean] [default: false]
+  --no-write   Don't update record file               [boolean] [default: false]
 ```
+
+### `esplint`
+
+Run check and update record.
 
 The options are:
 
 - `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
+
+### `esplint stats`
+
+Print stats about eslint violations.
 
 ## Configuration
 
