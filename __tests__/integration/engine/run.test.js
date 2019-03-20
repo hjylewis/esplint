@@ -1,63 +1,27 @@
-const os = require("os");
-const path = require("path");
-const execa = require("execa");
-const log = require("../../lib/log");
-const fs = require("fs");
-const stripJsonComments = require("strip-json-comments");
+const log = require("../../../lib/log");
 const stripAnsi = require("strip-ansi");
-const { version } = require("../../package.json");
+const { version } = require("../../../package.json");
+const { fixtureInit } = require("../util");
+
+const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
+  "engine.run"
+);
 
 log.log = jest.fn();
 log.error = jest.fn();
 log.warn = jest.fn();
 
-const fixtureDir = `${os.tmpdir()}/esplint/fixtures`;
-const fixtureSrc = path.resolve("./__tests__/integration/fixtures");
-const cwd = process.cwd();
+describe("engine.run", () => {
+  beforeAll(onBeforeAll);
 
-function getFixturePath(...args) {
-  return path.join(fixtureDir, ...args);
-}
+  afterEach(onAfterEach);
 
-function resetFixturePath(...args) {
-  const dest = path.join(fixtureDir, ...args);
-  const src = path.join(fixtureSrc, ...args);
-
-  execa.sync("cp", ["-fr", `${src}/.`, dest]);
-}
-
-function readRecord(fixturePath) {
-  const recordPath = path.join(fixturePath, ".esplint.rec.json");
-  return JSON.parse(stripJsonComments(fs.readFileSync(recordPath, "utf8")));
-}
-
-function setup(fixtureName, test) {
-  const fixturePath = getFixturePath(fixtureName);
-  return (...args) => {
-    process.chdir(fixturePath);
-    test({ fixturePath }, ...args);
-    resetFixturePath(fixtureName);
-  };
-}
-
-describe("engine", () => {
-  beforeAll(() => {
-    execa.sync("mkdir", ["-p", fixtureDir]);
-    execa.sync("cp", ["-r", `${fixtureSrc}/.`, fixtureDir]);
-  });
-
-  afterEach(() => {
-    process.chdir(cwd);
-  });
-
-  afterAll(() => {
-    execa.sync("rm", ["-r", fixtureDir]);
-  });
+  afterAll(onAfterAll);
 
   it(
     "throws error if no esplint config",
     setup("no-config", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       expect(() => {
         run({}, ["index.js"]);
       }).toThrowErrorMatchingSnapshot();
@@ -67,7 +31,7 @@ describe("engine", () => {
   it(
     "throws error if eslint error",
     setup("eslint-error", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       try {
         run({}, ["index.js"]);
         expect("This should never be reached").toEqual(false);
@@ -88,7 +52,7 @@ describe("engine", () => {
   it(
     "prints error if increase in eslint warnings",
     setup("increase-warning", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["index.js"]);
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
@@ -100,7 +64,7 @@ describe("engine", () => {
   it(
     "no errors and changes record count when warnings decrease",
     setup("decrease-warning", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["index.js"]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -113,7 +77,7 @@ describe("engine", () => {
   it(
     "returns message about turning off warning when count is zero",
     setup("decrease-warning-zero", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       // Run twice
       const [result1, result2] = [{}, {}].map(() => {
@@ -138,7 +102,7 @@ describe("engine", () => {
   it(
     "should message about turning off warning when count is zero because a file was deleted",
     setup("decrease-warning-zero-delete-file", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       // Run twice
       const [result1, result2] = [{}, {}].map(() => {
@@ -159,7 +123,7 @@ describe("engine", () => {
   it(
     "cleans up record by deleting removed files",
     setup("delete-file", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
@@ -173,7 +137,7 @@ describe("engine", () => {
   it(
     "ignores eslint rules not listed in config",
     setup("no-rules", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
@@ -184,7 +148,7 @@ describe("engine", () => {
   it(
     "alerts user when no rules are being tracked",
     setup("no-rules", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       run({}, ["."]);
       expect(log.warn).toHaveBeenCalledWith(
@@ -198,7 +162,7 @@ describe("engine", () => {
   it(
     "lints full surface area when no files are provided",
     setup("decrease-warning", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       run({}, []);
       expect(log.log).toHaveBeenCalledWith(
@@ -212,7 +176,7 @@ describe("engine", () => {
   it(
     "creates new record when there wasn't one",
     setup("no-record", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       run({}, ["."]);
       const record = readRecord(fixturePath);
@@ -223,7 +187,7 @@ describe("engine", () => {
   it(
     "throws error if record is not valid json",
     setup("invalid-record", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       expect(() => {
         run({}, ["."]);
@@ -234,7 +198,7 @@ describe("engine", () => {
   it(
     "overwrites existing file is 'overwrite' is passed",
     setup("increase-warning", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({ overwrite: true }, ["index.js"]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -247,7 +211,7 @@ describe("engine", () => {
   it(
     "overwrites exisiting record if config hashes don't match",
     setup("no-hash-match", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["index.js"]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -262,7 +226,7 @@ describe("engine", () => {
   it(
     "handles new file with no error",
     setup("new-file", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["newFile.js"]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -278,7 +242,7 @@ describe("engine", () => {
   it(
     "errors if new file has error",
     setup("new-file-with-error", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
@@ -288,7 +252,7 @@ describe("engine", () => {
   it(
     "sorts files",
     setup("sorts-files", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({ overwrite: true }, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -301,7 +265,7 @@ describe("engine", () => {
   it(
     'does not update record if "write" option is false',
     setup("decrease-warning", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       run({ write: false }, []);
       expect(log.log).toHaveBeenCalledWith(
@@ -315,7 +279,7 @@ describe("engine", () => {
   it(
     'still makes checks if "write" option is false',
     setup("increase-warning", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({ write: false }, ["index.js"]);
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
@@ -327,7 +291,7 @@ describe("engine", () => {
   it(
     "should throw error if record version is newer and record file changes",
     setup("new-version-decrease-warning", () => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
 
       try {
         run({}, ["."]);
@@ -343,7 +307,7 @@ describe("engine", () => {
   it(
     "should succeed even if record version is newer if record file does NOT change",
     setup("new-version-no-change", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -356,7 +320,7 @@ describe("engine", () => {
   it(
     "should succeed and update if record version is older regardless if there's no change",
     setup("old-version-no-change", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -369,7 +333,7 @@ describe("engine", () => {
   it(
     "should hide warnings when there are no violations in a file",
     setup("decrease-warning-hide-rule", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(1);
@@ -387,7 +351,7 @@ describe("engine", () => {
   it(
     "should hide file if no longer has violations",
     setup("decrease-warning-in-other-file", ({ fixturePath }) => {
-      const { run } = require("../../lib/engine");
+      const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);

@@ -1,10 +1,10 @@
-const cli = require("../lib/cli");
-const { run } = require("../lib/engine");
-const log = require("../lib/log");
+const cli = require("../../lib/cli");
+const { run } = require("../../lib/engine");
+const log = require("../../lib/log");
 const stripAnsi = require("strip-ansi");
 
-jest.mock("../lib/engine");
-jest.mock("../lib/log");
+jest.mock("../../lib/engine");
+jest.mock("../../lib/log");
 process.exit = jest.fn();
 
 beforeEach(() => {
