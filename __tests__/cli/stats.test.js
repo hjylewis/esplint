@@ -30,20 +30,17 @@ it("should print warning when record file doesn't exist", () => {
 
 it("should print the count and list files per rule", () => {
   getRuleStats.mockReturnValue({
-    total: 102,
-    rules: {
-      "no-console": {
-        count: 2,
-        files: ["index.js", "not-index.js"]
-      },
-      "other-rule": {
-        count: 100,
-        files: ["file.js", "other-file.js", "other-other-file.js"]
-      },
-      "no-violations": {
-        count: 0,
-        files: []
-      }
+    "no-console": {
+      count: 2,
+      files: ["index.js", "not-index.js"]
+    },
+    "other-rule": {
+      count: 100,
+      files: ["file.js", "other-file.js", "other-other-file.js"]
+    },
+    "no-violations": {
+      count: 0,
+      files: []
     }
   });
   cli(["stats"]);
@@ -77,20 +74,17 @@ it("should print the count and list files per rule", () => {
 
 it("should print the count and list files per rule", () => {
   getRuleStats.mockReturnValue({
-    total: 0,
-    rules: {
-      "no-console": {
-        count: 0,
-        files: []
-      },
-      "other-rule": {
-        count: 0,
-        files: []
-      },
-      "no-violations": {
-        count: 0,
-        files: []
-      }
+    "no-console": {
+      count: 0,
+      files: []
+    },
+    "other-rule": {
+      count: 0,
+      files: []
+    },
+    "no-violations": {
+      count: 0,
+      files: []
     }
   });
   cli(["stats"]);

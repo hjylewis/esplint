@@ -24,12 +24,9 @@ describe("engine.getRuleStats", () => {
     setup("delete-file", () => {
       const { getRuleStats } = require("../../../lib/engine");
       expect(getRuleStats()).toEqual({
-        total: 2,
-        rules: {
-          "no-console": {
-            count: 2,
-            files: ["index.js", "not-index.js"]
-          }
+        "no-console": {
+          count: 2,
+          files: ["index.js", "not-index.js"]
         }
       });
     })
@@ -40,12 +37,9 @@ describe("engine.getRuleStats", () => {
     setup("zero-warnings", () => {
       const { getRuleStats } = require("../../../lib/engine");
       expect(getRuleStats()).toEqual({
-        total: 0,
-        rules: {
-          "no-console": {
-            count: 0,
-            files: []
-          }
+        "no-console": {
+          count: 0,
+          files: []
         }
       });
     })
