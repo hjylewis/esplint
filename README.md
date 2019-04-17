@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/hjylewis/esplint/master.svg?style=flat-square)](https://travis-ci.org/hjylewis/esplint)
 [![npm](https://img.shields.io/npm/l/esplint.svg?style=flat-square)](https://github.com/hjylewis/esplint/blob/master/LICENSE)
 
-A ESLint warning tracker to help introduce rules into a legacy code base
+An ESLint warning tracker to help introduce rules into a legacy code base
 
 ## About
 
