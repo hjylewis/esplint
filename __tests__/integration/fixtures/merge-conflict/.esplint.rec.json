@@ -2,9 +2,6 @@
   "version": "0.4.1",
   "hash": "cc3bc4038476f82524667d6bcd834dad8d64d572",
   "files": {
-    "a.js": {
-      "no-console": 1
-    },
     "b.js": {
       "no-console": 1
     },
