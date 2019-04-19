@@ -364,4 +364,26 @@ describe("engine.run", () => {
       });
     })
   );
+
+  it(
+    "should try to resolve merge conflicts in record file",
+    setup("merge-conflict", ({ fixturePath }) => {
+      const { run } = require("../../../lib/engine");
+      const { results, hasError } = run({}, ["."]);
+      expect(hasError).toEqual(false);
+      expect(results).toHaveLength(0);
+      expect(log.warn).toHaveBeenCalledWith(
+        log.createWarning(
+          "Attempting to auto resolve git conflicts find in .esplint.rec.json."
+        )
+      );
+
+      const record = readRecord(fixturePath);
+      expect(record.files).toEqual({
+        "z.js": {
+          "no-console": 1
+        }
+      });
+    })
+  );
 });
