@@ -116,3 +116,7 @@ The options are:
 - `eslint` — ESLint cli (CLIEngine) [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+
+## Git Conflicts
+
+Git conflicts can sometimes occur in the record file. If that happens, running `esplint` should fix most cases.
