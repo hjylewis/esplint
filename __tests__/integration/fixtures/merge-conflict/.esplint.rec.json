@@ -5,9 +5,6 @@
     "a.js": {
       "no-console": 1
     },
-    "b.js": {
-      "no-console": 1
-    },
     "z.js": {
       "no-console": 1
     }
