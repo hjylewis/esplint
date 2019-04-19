@@ -2,9 +2,22 @@
   "version": "0.4.1",
   "hash": "cc3bc4038476f82524667d6bcd834dad8d64d572",
   "files": {
+<<<<<<< HEAD
     "b.js": {
       "no-console": 1
     },
+||||||| merged common ancestors
+    "a.js": {
+      "no-console": 1
+    },
+    "b.js": {
+      "no-console": 1
+    },
+=======
+    "a.js": {
+      "no-console": 1
+    },
+>>>>>>> merge-conflict-2
     "z.js": {
       "no-console": 1
     }
