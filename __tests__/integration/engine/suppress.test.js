@@ -32,6 +32,19 @@ describe("engine.suppress", () => {
   );
 
   it(
+    "should handle no violations",
+    setup("increase-warning", ({ fixturePath }) => {
+      const { suppress } = require("../../../lib/engine");
+      suppress(["no-extra-semi"], ["."]);
+
+      const lines = readFile(fixturePath, "index.js")
+        .split("\n")
+        .filter(l => l.length > 0);
+      expect(lines).toEqual(['console.log("");', 'console.log("");']);
+    })
+  );
+
+  it(
     "should insert disable-eslint comment for multiple files",
     setup("multiple-files-no-record", ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
