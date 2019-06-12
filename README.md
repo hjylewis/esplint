@@ -105,6 +105,8 @@ Print stats about eslint violations.
 
 Will suppress all existing violations of a eslint rule. It does this by inserting `disable-eslint-next-line` comments into your code.
 
+> NOTE: `esplint suppress` doesn't work very well with JSX because comments in JSX are very [finicky](https://github.com/eslint/eslint/issues/7030). If you have an idea, let me know and open an issue.
+
 ## Configuration
 
 ```js
