@@ -12,6 +12,8 @@ Linting is a powerful way to catch bad code and enforce best practices. That sai
 
 Instead, esplint allows you to turn new rules on as “warnings,” and prevent further violations. esplint tracks the number of eslint “warnings” in each file and prevents the number of “warnings” from increasing. When the number of “warnings” decreases, esplint records the new lower number. This way you can fix existing, legacy violations over time while avoiding further violations.
 
+For more information about the motivation behind esplint, read this [post](http://hjylewis.com/posts/painlessly-turn-on-eslint-rules/).
+
 ## Getting Started
 
 Install esplint as a dev dependency of your project.
