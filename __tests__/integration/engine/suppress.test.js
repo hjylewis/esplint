@@ -119,4 +119,21 @@ describe("engine.suppress", () => {
       ]);
     })
   );
+
+  it(
+    "should only suppress the rules passed as arguments",
+    setup("extra-semi", ({ fixturePath }) => {
+      const { suppress } = require("../../../lib/engine");
+      suppress(["no-extra-semi"], ["."]);
+
+      const lines = readFile(fixturePath, "index.js")
+        .split("\n")
+        .filter(l => l.length > 0);
+      expect(lines).toEqual([
+        "// FIXME: The next line was auto suppressed by esplint",
+        "// eslint-disable-next-line no-extra-semi",
+        'console.log("");;'
+      ]);
+    })
+  );
 });
