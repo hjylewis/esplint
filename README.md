@@ -70,14 +70,18 @@ See a full example [here](example).
 ```
 $ ./node_modules/.bin/esplint --help
 
-esplint
+esplint [files..]
 
 Run check and update record
-esplint [options] file.js [file.js] [dir]
 
 Commands:
-  esplint        Run check and update record                          [default]
-  esplint stats  Print stats about eslint violations
+  esplint [files..]                  Run check and update record      [default]
+  esplint stats                      Print stats about eslint violations
+  esplint suppress <rule> [files..]  Disable eslint on specific lines to
+                                      suppress a rule
+
+Positionals:
+  files  Paths to files or directories to run esplint on           [default: []]
 
 Options:
   --version    Show version number                                     [boolean]
@@ -98,6 +102,12 @@ The options are:
 ### `esplint stats`
 
 Print stats about eslint violations.
+
+### `esplint suppress`
+
+Will suppress all existing violations of a eslint rule. It does this by inserting `disable-eslint-next-line` comments into your code.
+
+> NOTE: `esplint suppress` doesn't work very well with JSX because comments in JSX are very [finicky](https://github.com/eslint/eslint/issues/7030). If you have an idea, let me know and open an issue.
 
 ## Configuration
 

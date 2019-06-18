@@ -166,7 +166,7 @@ describe("engine.run", () => {
 
       run({}, []);
       expect(log.log).toHaveBeenCalledWith(
-        `No files provided, linting full surface area...`
+        `No files provided, running on full surface area...`
       );
       const record = readRecord(fixturePath);
       expect(record.files["index.js"]["no-console"]).toEqual(1);
@@ -269,7 +269,7 @@ describe("engine.run", () => {
 
       run({ write: false }, []);
       expect(log.log).toHaveBeenCalledWith(
-        `No files provided, linting full surface area...`
+        `No files provided, running on full surface area...`
       );
       const record = readRecord(fixturePath);
       expect(record.files["index.js"]["no-console"]).toEqual(2);

@@ -21,8 +21,14 @@ function fixtureInit(id) {
   }
 
   function readRecord(fixturePath) {
-    const recordPath = path.join(fixturePath, ".esplint.rec.json");
-    return JSON.parse(stripJsonComments(fs.readFileSync(recordPath, "utf8")));
+    return JSON.parse(
+      stripJsonComments(readFile(fixturePath, ".esplint.rec.json"))
+    );
+  }
+
+  function readFile(fixturePath, filename) {
+    const recordPath = path.join(fixturePath, filename);
+    return fs.readFileSync(recordPath, "utf8");
   }
 
   function setup(fixtureName, test) {
@@ -49,6 +55,7 @@ function fixtureInit(id) {
   return {
     setup,
     readRecord,
+    readFile,
     onBeforeAll,
     onAfterEach,
     onAfterAll
