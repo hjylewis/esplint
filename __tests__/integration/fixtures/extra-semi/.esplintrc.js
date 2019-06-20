@@ -1,4 +1,7 @@
 module.exports = {
   surfaceArea: ["."],
-  rules: ["no-console"]
+  rules: ["no-console"],
+  eslint: {
+    configFile: "./.eslintrc.js"
+  }
 };
