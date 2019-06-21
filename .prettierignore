@@ -1,3 +1,4 @@
+CHANGELOG.md
 __tests__/integration/fixtures/invalid-record/.esplint.rec.json
 __tests__/integration/fixtures/extra-semi/index.js
 __tests__/integration/fixtures/suppressed-extra-semi/index.js
