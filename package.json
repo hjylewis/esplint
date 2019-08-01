@@ -32,7 +32,7 @@
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.17.0",
-    "execa": "^0.10.0",
+    "execa": "^2.0.3",
     "husky": "^2.4.1",
     "jest": "^24.8.0",
     "lint-staged": "^9.2.0",
