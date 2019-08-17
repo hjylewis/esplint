@@ -136,4 +136,17 @@ describe("engine.suppress", () => {
       ]);
     })
   );
+
+  it(
+    "should respect eslint configuration",
+    setup("config-with-globals", ({ fixturePath }) => {
+      const { suppress } = require("../../../lib/engine");
+      suppress(["no-undef"], ["."]);
+
+      const lines = readFile(fixturePath, "index.js")
+        .split("\n")
+        .filter(l => l.length > 0);
+      expect(lines).toEqual(["undefinedGlobal;"]);
+    })
+  );
 });
