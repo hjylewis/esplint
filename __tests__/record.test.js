@@ -3,8 +3,11 @@ jest.mock("../package.json", () => ({ version: "1.0.0" }));
 
 describe("createRecord", () => {
   it("attaches current version", () => {
-    const { version } = createRecord({ config: { rules: [] }, files: {} });
-    expect(version).toEqual("1.0.0");
+    const { recordVersion } = createRecord({
+      config: { rules: [] },
+      files: {}
+    });
+    expect(recordVersion).toEqual(1);
   });
 
   it("sorts files", () => {
