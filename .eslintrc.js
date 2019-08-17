@@ -10,6 +10,7 @@ module.exports = {
   },
   plugins: ["jest"],
   rules: {
-    "no-console": "warn"
+    "no-console": "warn",
+    "no-shadow": "error"
   }
 };

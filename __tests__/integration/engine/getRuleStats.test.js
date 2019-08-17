@@ -44,4 +44,12 @@ describe("engine.getRuleStats", () => {
       });
     })
   );
+
+  it(
+    "should ignore rules no longer configured to be tracked",
+    setup("no-tracked", () => {
+      const { getRuleStats } = require("../../../lib/engine");
+      expect(getRuleStats()).toEqual({});
+    })
+  );
 });
