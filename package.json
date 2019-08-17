@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/hjylewis/esplint#readme",
   "devDependencies": {
-    "eslint": "^5.16.0",
+    "eslint": "^6.1.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^21.17.0",
     "execa": "^2.0.3",
@@ -41,7 +41,7 @@
     "strip-ansi": "^5.0.0"
   },
   "peerDependencies": {
-    "eslint": "4.x.x || 5.x.x"
+    "eslint": "4.x.x || 5.x.x || 6.x.x"
   },
   "dependencies": {
     "chalk": "^2.4.1",
