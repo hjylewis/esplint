@@ -1,7 +1,7 @@
 const log = require("../../../lib/log");
 const stripAnsi = require("strip-ansi");
-const { version } = require("../../../package.json");
 const { fixtureInit } = require("../util");
+jest.mock("../../../package.json", () => ({ version: "1.0.0" }));
 
 const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
   "engine.run"
@@ -289,7 +289,7 @@ describe("engine.run", () => {
   );
 
   it(
-    "should throw error if record version is newer and record file changes",
+    "should throw error if record version is newer than current version",
     setup("new-version-decrease-warning", () => {
       const { run } = require("../../../lib/engine");
 
@@ -298,35 +298,51 @@ describe("engine.run", () => {
         expect("It should never get here").toBe(false);
       } catch (e) {
         expect(stripAnsi(e.message)).toEqual(
-          `✖ You are using an older version of esplint (${version}) than what was used to create .esplint.rec.json (1000.0.0).\nMake sure to upgrade so you're on the same version.`
+          `✖ You are using an older "record version" of esplint (1) than what was used to create .esplint.rec.json (2).\nMake sure to upgrade esplint so you're on the same "record version" (or higher).`
         );
       }
     })
   );
 
   it(
-    "should succeed even if record version is newer if record file does NOT change",
-    setup("new-version-no-change", ({ fixturePath }) => {
+    "should succeed and update to new record version if record version is older than current version",
+    setup("old-version", ({ fixturePath }) => {
       const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
 
       const record = readRecord(fixturePath);
-      expect(record.version).toEqual("1000.0.0");
+      expect(record.recordVersion).toEqual(1);
     })
   );
 
   it(
-    "should succeed and update if record version is older regardless if there's no change",
-    setup("old-version-no-change", ({ fixturePath }) => {
+    "should throw error if record version is uses legacy version less than 0.4.1",
+    setup("legacy-version-not-acceptable", () => {
+      const { run } = require("../../../lib/engine");
+
+      try {
+        run({}, ["."]);
+        expect("It should never get here").toBe(false);
+      } catch (e) {
+        expect(stripAnsi(e.message)).toEqual(
+          `✖ Cannot determine the version of your record file or the version is too out-of-date.\nPlease use the --overwrite flag to re-generate your record file.`
+        );
+      }
+    })
+  );
+
+  it(
+    "should succeed and update to new record version if record version is legacy but >= 0.4.1",
+    setup("legacy-version-acceptable", ({ fixturePath }) => {
       const { run } = require("../../../lib/engine");
       const { results, hasError } = run({}, ["."]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
 
       const record = readRecord(fixturePath);
-      expect(record.version).not.toEqual("0.0.0");
+      expect(record.recordVersion).toEqual(1);
     })
   );
 
