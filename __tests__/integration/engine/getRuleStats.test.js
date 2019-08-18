@@ -1,4 +1,9 @@
+const log = require("../../../lib/log");
 const { fixtureInit } = require("../util");
+
+log.log = jest.fn();
+log.error = jest.fn();
+log.warn = jest.fn();
 
 const { setup, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
   "engine.getRuleStats"

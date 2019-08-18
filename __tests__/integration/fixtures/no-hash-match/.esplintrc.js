@@ -1,4 +1,4 @@
 module.exports = {
-  surfaceArea: ["."],
+  surfaceArea: ["./scripts"],
   rules: ["no-console"]
 };
