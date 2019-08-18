@@ -7,12 +7,7 @@ function updateExample() {
 
   // Update .esplint.rec.json
   const { run } = require("../lib/engine");
-  run(
-    {
-      overwrite: true
-    },
-    []
-  );
+  run({}, []);
 
   // Update package.json
   const examplePackageFile = fs.readFileSync("./package.json", "utf8");
