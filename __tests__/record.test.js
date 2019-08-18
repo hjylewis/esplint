@@ -4,7 +4,7 @@ jest.mock("../package.json", () => ({ version: "1.0.0" }));
 describe("createRecord", () => {
   it("attaches current version", () => {
     const { recordVersion } = createRecord({
-      config: { rules: [] },
+      config: { rules: [], __originalConfig: { rules: [] } },
       files: {}
     });
     expect(recordVersion).toEqual(1);
@@ -12,7 +12,7 @@ describe("createRecord", () => {
 
   it("sorts files", () => {
     const { files } = createRecord({
-      config: { rules: [] },
+      config: { rules: [], __originalConfig: { rules: [] } },
       files: {
         "z/a/c": {
           rule: 1

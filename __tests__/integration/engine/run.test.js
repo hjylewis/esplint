@@ -209,17 +209,18 @@ describe("engine.run", () => {
   );
 
   it(
-    "overwrites exisiting record if config hashes don't match",
+    "should throw error if config hashes don't match",
     setup("no-hash-match", () => {
       const { run } = require("../../../lib/engine");
-      const { results, hasError } = run({}, ["index.js"]);
-      expect(hasError).toEqual(false);
-      expect(results).toHaveLength(0);
-      expect(log.warn).toHaveBeenCalledWith(
-        log.createWarning(
-          "Hashes don't match. Overwriting existing record file..."
-        )
-      );
+
+      try {
+        run({}, ["index.js"]);
+        expect("It should never get here").toBe(false);
+      } catch (e) {
+        expect(stripAnsi(e.message)).toEqual(
+          `✖ .esplint.rec.json was created using a different configuration.\nPlease use the --overwrite flag to re-generate your record file.`
+        );
+      }
     })
   );
 

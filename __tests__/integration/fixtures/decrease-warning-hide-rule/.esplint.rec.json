@@ -1,6 +1,6 @@
 {
   "recordVersion": 1,
-  "hash": "119be9453c3998b726c7787fe9337957df1f7315",
+  "configHash": "0b85c98c0ae3b0ecce8a5df19607c0296db1fafe",
   "files": {
     "index.js": {
       "no-console": 1,

@@ -1,6 +1,6 @@
 {
   "recordVersion": 1,
-  "hash": "no going to match",
+  "configHash": "773a8b36f5d74ada1b0144c983a6d725c71c9413",
   "files": {
     "index.js": {
       "no-console": 1
