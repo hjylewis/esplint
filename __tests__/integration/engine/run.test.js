@@ -218,7 +218,7 @@ describe("engine.run", () => {
         expect("It should never get here").toBe(false);
       } catch (e) {
         expect(stripAnsi(e.message)).toEqual(
-          `✖ .esplint.rec.json was created using a different configuration.\nPlease use the --overwrite flag to re-generate your record file.`
+          `.esplint.rec.json was created using a different configuration.\nPlease use the --overwrite flag to re-generate your record file.`
         );
       }
     })
@@ -299,7 +299,7 @@ describe("engine.run", () => {
         expect("It should never get here").toBe(false);
       } catch (e) {
         expect(stripAnsi(e.message)).toEqual(
-          `✖ You are using an older "record version" of esplint (1) than what was used to create .esplint.rec.json (2).\nMake sure to upgrade esplint so you're on the same "record version" (or higher).`
+          `You are using an older "record version" of esplint (1) than what was used to create .esplint.rec.json (2).\nMake sure to upgrade esplint so you're on the same "record version" (or higher).`
         );
       }
     })
@@ -328,7 +328,7 @@ describe("engine.run", () => {
         expect("It should never get here").toBe(false);
       } catch (e) {
         expect(stripAnsi(e.message)).toEqual(
-          `✖ Cannot determine the version of your record file or the version is too out-of-date.\nPlease use the --overwrite flag to re-generate your record file.`
+          `Cannot determine the version of your record file or the version is too out-of-date.\nPlease use the --overwrite flag to re-generate your record file.`
         );
       }
     })
