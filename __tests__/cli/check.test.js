@@ -2,6 +2,7 @@ const cli = require("../../lib/cli");
 const { run } = require("../../lib/engine");
 const log = require("../../lib/log");
 const stripAnsi = require("strip-ansi");
+const EsplintError = require("../../lib/EsplintError");
 
 jest.mock("../../lib/engine");
 jest.mock("../../lib/log");
@@ -19,6 +20,7 @@ beforeEach(() => {
   log.error.mockReset();
   log.log.mockReset();
   log.warn.mockReset();
+  log.createError.mockReset();
 });
 
 it("should strip ignore first two arguments of process.argv", () => {
@@ -63,6 +65,18 @@ it("should print exception and exit with error code", () => {
   cli([]);
 
   expect(log.error).toHaveBeenCalledWith(error);
+  expect(process.exit).toHaveBeenCalledWith(1);
+});
+
+it("should print message of EsplintError and exit with error code", () => {
+  log.createError.mockImplementation(i => i);
+  run.mockImplementation(() => {
+    throw new EsplintError("this is an error");
+  });
+  cli([]);
+
+  expect(log.createError).toHaveBeenCalledWith("this is an error");
+  expect(log.error).toHaveBeenCalledWith("this is an error");
   expect(process.exit).toHaveBeenCalledWith(1);
 });
 

@@ -28,6 +28,6 @@ Object {
 }
 `;
 
-exports[`engine.run throws error if no esplint config 1`] = `"[31m✖ No config file found.[39m"`;
+exports[`engine.run throws error if no esplint config 1`] = `"No config file found."`;
 
-exports[`engine.run throws error if record is not valid json 1`] = `"[31m✖ .esplint.rec.json is not valid JSON. Please fix and try again.[39m"`;
+exports[`engine.run throws error if record is not valid json 1`] = `".esplint.rec.json is not valid JSON. Please fix and try again."`;
