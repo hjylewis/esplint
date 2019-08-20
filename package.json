@@ -4,7 +4,7 @@
   "description": "A ESLint warning tracker to help introduce rules into a legacy code base",
   "bin": "index.js",
   "scripts": {
-    "release": "standard-version",
+    "release": "standard-version --commit-all",
     "test": "jest"
   },
   "lint-staged": {
