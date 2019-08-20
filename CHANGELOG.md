@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.6.3](https://github.com/hjylewis/esplint/compare/v0.6.2...v0.6.3) (2019-08-20)
+
+
+### Bug Fixes
+
+* Add error when new recordVersion is present ([#45](https://github.com/hjylewis/esplint/issues/45)) ([f0166e1](https://github.com/hjylewis/esplint/commit/f0166e1))
+
 ### [0.6.2](https://github.com/hjylewis/esplint/compare/v0.6.1...v0.6.2) (2019-07-15)
 
 
