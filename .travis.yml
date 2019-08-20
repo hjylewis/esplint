@@ -9,3 +9,7 @@ env:
   - ESLINT_VERSION=4
 before_script:
   - npm i eslint@$ESLINT_VERSION --no-save
+  - npm install -g codecov
+script:
+  - npm test -- --coverage --coverageDirectory "./coverage/"
+  - codecov
