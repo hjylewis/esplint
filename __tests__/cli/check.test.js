@@ -3,9 +3,16 @@ const { run } = require("../../lib/engine");
 const log = require("../../lib/log");
 const stripAnsi = require("strip-ansi");
 const EsplintError = require("../../lib/EsplintError");
+const git = require("simple-git/promise");
 
 jest.mock("../../lib/engine");
 jest.mock("../../lib/log");
+jest.mock("simple-git/promise", () => {
+  const gitAdd = jest.fn();
+  return () => ({
+    add: gitAdd
+  });
+});
 process.exit = jest.fn();
 
 beforeEach(() => {
@@ -40,7 +47,7 @@ it("should pass default options to engine", () => {
   cli([]);
 
   expect(run).toHaveBeenCalledWith(
-    { write: true, overwrite: false },
+    { write: true, overwrite: false, stageRecordFile: false },
     expect.anything()
   );
 });
@@ -101,6 +108,28 @@ it("should show success message if no errors", () => {
   cli([]);
 
   expect(log.log).toHaveBeenCalledWith(log.createSuccess("Looking good!"));
+});
+
+it("should stage record file if flag is passed", async () => {
+  run.mockReturnValue({
+    results: [],
+    hasError: false
+  });
+  const gitAddPromise = Promise.resolve();
+  git().add.mockReturnValue(gitAddPromise);
+
+  cli(["--stage-record-file"]);
+
+  await gitAddPromise;
+
+  expect(log.log).toHaveBeenCalledWith(
+    "Running `git add .esplint.rec.json`..."
+  );
+  expect(git().add).toHaveBeenCalledTimes(1);
+  expect(git().add).toHaveBeenCalledWith([
+    expect.stringContaining(".esplint.rec.json")
+  ]);
+  expect(log.log).toHaveBeenCalledWith("Record file staged.");
 });
 
 it("should properly log the results", () => {

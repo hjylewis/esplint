@@ -8,8 +8,7 @@
   },
   "lint-staged": {
     "*.js": [
-      "esplint",
-      "git add .esplint.rec.json"
+      "esplint --stage-record-file"
     ]
   },
   "repository": {},
