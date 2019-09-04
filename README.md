@@ -56,8 +56,7 @@ Here's an example using lint-staged:
   },
   "lint-staged": {
     "*.js": [
-      "esplint",
-      "git add .esplint.rec.json"
+      "esplint --stage-record-file"
     ]
   },
   ...
@@ -89,6 +88,8 @@ Options:
   --help       Show help                                               [boolean]
   --overwrite  Ignore existing record file            [boolean] [default: false]
   --no-write   Don't update record file               [boolean] [default: false]
+  --stage-record-file  Git add record file. Helpful when running esplint on a
+                       pre-commit hook.               [boolean] [default: false]
 ```
 
 ### `esplint`
@@ -99,6 +100,7 @@ The options are:
 
 - `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
+- `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
 
 ### `esplint stats`
 
