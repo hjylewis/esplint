@@ -17,6 +17,13 @@ All notable changes to this project will be documented in this file. See [standa
 * Move to separate versioning for records ([#43](https://github.com/hjylewis/esplint/issues/43)) ([79043fc](https://github.com/hjylewis/esplint/commit/79043fc))
 * Switch to configHash and error if hashes don't match ([#44](https://github.com/hjylewis/esplint/issues/44)) ([c59f7f2](https://github.com/hjylewis/esplint/commit/c59f7f2))
 
+### [0.6.3](https://github.com/hjylewis/esplint/compare/v0.6.2...v0.6.3) (2019-08-20)
+
+
+### Bug Fixes
+
+* Add error when new recordVersion is present ([#45](https://github.com/hjylewis/esplint/issues/45)) ([f0166e1](https://github.com/hjylewis/esplint/commit/f0166e1))
+
 ### [0.6.2](https://github.com/hjylewis/esplint/compare/v0.6.1...v0.6.2) (2019-07-15)
 
 
