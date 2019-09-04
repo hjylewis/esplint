@@ -1,6 +1,6 @@
 {
   "name": "esplint",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "description": "A ESLint warning tracker to help introduce rules into a legacy code base",
   "bin": "index.js",
   "scripts": {
