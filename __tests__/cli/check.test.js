@@ -127,7 +127,7 @@ it("should stage record file if flag is passed", async () => {
   );
   expect(git().add).toHaveBeenCalledTimes(1);
   expect(git().add).toHaveBeenCalledWith([
-    "/Users/hlewis/projects/esplint/.esplint.rec.json"
+    expect.stringContaining(".esplint.rec.json")
   ]);
   expect(log.log).toHaveBeenCalledWith("Record file staged.");
 });
