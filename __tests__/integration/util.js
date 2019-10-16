@@ -1,7 +1,6 @@
 const os = require("os");
 const path = require("path");
 const fs = require("fs");
-const stripJsonComments = require("strip-json-comments");
 const execa = require("execa");
 
 function fixtureInit(id) {
@@ -21,9 +20,7 @@ function fixtureInit(id) {
   }
 
   function readRecord(fixturePath) {
-    return JSON.parse(
-      stripJsonComments(readFile(fixturePath, ".esplint.rec.json"))
-    );
+    return JSON.parse(readFile(fixturePath, ".esplint.rec.json"));
   }
 
   function readFile(fixturePath, filename) {
