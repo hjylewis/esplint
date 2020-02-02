@@ -47,7 +47,7 @@ it("should pass default options to engine", () => {
   cli([]);
 
   expect(run).toHaveBeenCalledWith(
-    { write: true, overwrite: false, stageRecordFile: false },
+    { write: true, overwrite: false, stageRecordFile: false, workingDir: "" },
     expect.anything()
   );
 });
