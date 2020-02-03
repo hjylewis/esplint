@@ -64,6 +64,11 @@ it("should pass --overwrite option to engine", () => {
   expect(run.mock.calls[0][0].overwrite).toEqual(true);
 });
 
+it("should pass --working-dir option to engine", () => {
+  cli(["--working-dir", "./example"]);
+  expect(run.mock.calls[0][0].workingDir).toEqual("./example");
+});
+
 it("should print exception and exit with error code", () => {
   const error = new Error("this is an error");
   run.mockImplementation(() => {
