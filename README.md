@@ -122,6 +122,7 @@ module.exports = {
   eslint: { ... },
   rules: [ ... ],
   write: true,
+  reduceWarningsBy: 0.1
 };
 ```
 
@@ -131,6 +132,7 @@ The options are:
 - `eslint` — ESLint cli (CLIEngine) [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+- `reduceWarningsBy` — If existing warning count is not reduced by this amount, command will fail. Provided in numberical percentage value, i.e for 10% reduction, the value is `0.1`. Scoped per file per rule
 
 ## Git Conflicts
 
