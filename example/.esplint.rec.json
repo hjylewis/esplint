@@ -1,9 +1,10 @@
 {
   "recordVersion": 1,
-  "configHash": "773a8b36f5d74ada1b0144c983a6d725c71c9413",
+  "configHash": "5f21b94a2aa18e85ad9b81ee78db189f2117d2ce",
   "files": {
-    "index.js": {
-      "no-console": 2
+    "example/index.js": {
+      "no-console": 1,
+      "no-unused-vars": 1
     }
   }
 }
