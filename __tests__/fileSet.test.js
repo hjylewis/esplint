@@ -50,7 +50,6 @@ describe("compareFileSets", () => {
         }
       }
     );
-
     expect(result).toHaveLength(2);
   });
 

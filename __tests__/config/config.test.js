@@ -43,12 +43,15 @@ describe("getConfig", function() {
     process.chdir(oldDir);
   });
   it("should load config with reduceWarningsBy", function() {
-    const workingDir = path.resolve(__dirname, "reduceWarningsBy");
-    const { result } = getConfig({ workingDir });
+    const workingDir = path.resolve(__dirname, "./fixtures/reduceWarningsBy");
+    const result = getConfig({ workingDir });
     expect(result.reduceWarningsBy).toEqual(0.5);
   });
   it("should throw error if reduceWarningsBy is not a number", function() {
-    const workingDir = path.resolve(__dirname, "reduceWarningsBy-NAN");
+    const workingDir = path.resolve(
+      __dirname,
+      "./fixtures/reduceWarningsBy-NAN"
+    );
     try {
       getConfig({ workingDir });
       throwShouldFailError();
@@ -82,7 +85,7 @@ describe("getConfig", function() {
       throwShouldFailError();
     } catch (error) {
       expect(error.toString()).toEqual(
-        "reduceWarningsBy should never be negative"
+        "EsplintError: reduceWarningsBy should never be negative"
       );
     }
   });
