@@ -52,7 +52,32 @@ describe("compareFileSets", () => {
     );
     expect(result).toHaveLength(2);
   });
-
+  it("should return an error for warningsIncreased and warningsReduced guards", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10,
+          rule2: 10
+        },
+        "bar.js": {
+          rule3: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 12,
+          rule2: 10
+        },
+        "bar.js": {
+          rule3: 12
+        }
+      },
+      {
+        reduceWarningsBy: 0.5
+      }
+    );
+    expect(result).toHaveLength(5);
+  });
   it("returns an error if rule surfaces", () => {
     const result = compareFileSets(
       {},
