@@ -101,6 +101,11 @@ The options are:
 - `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 - `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
+- `--working-dir` — Another directory from which to load config file from and write record file to
+- `--guards` — These will be run on the linting results to see which rules are breaking and causing esplint errors.
+  Possible options are
+  - warningsIncreased (already run by default)
+  - warningsReducedBy
 
 ### `esplint stats`
 

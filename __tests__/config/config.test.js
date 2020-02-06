@@ -15,6 +15,7 @@ describe("getConfig", function() {
       overwrite: false,
       reduceWarningsBy: 0,
       workingDir,
+      guards: [],
       __originalConfig: {
         surfaceArea: ["."],
         rules: ["no-console"]
@@ -33,6 +34,7 @@ describe("getConfig", function() {
       reduceWarningsBy: 0,
       write: true,
       overwrite: false,
+      guards: [],
       __originalConfig: {
         surfaceArea: ["."],
         rules: ["no-console"]

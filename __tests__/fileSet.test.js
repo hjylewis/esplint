@@ -73,7 +73,8 @@ describe("compareFileSets", () => {
         }
       },
       {
-        reduceWarningsBy: 0.5
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
       }
     );
     expect(result).toHaveLength(5);
@@ -93,6 +94,7 @@ describe("compareFileSets", () => {
         }
       },
       {
+        guards: ["warningsReducedBy"],
         reduceWarningsBy: 0.5
       }
     );
