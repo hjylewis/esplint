@@ -101,6 +101,10 @@ The options are:
 - `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 - `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
+- `--guards` — These will be run on the linting results to see which rules are breaking and causing esplint errors.
+  Possible options are
+  - warningsIncreased (already run by default)
+  - warningsReducedBy
 
 ### `esplint stats`
 
@@ -122,6 +126,7 @@ module.exports = {
   eslint: { ... },
   rules: [ ... ],
   write: true,
+  reduceWarningsBy: 0.1
 };
 ```
 
@@ -131,6 +136,7 @@ The options are:
 - `eslint` — ESLint cli (CLIEngine) [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+- `reduceWarningsBy` — If existing warning count is not reduced by this amount, command will fail. Provided in numberical percentage value, i.e for 10% reduction, the value is `0.1`. Scoped per file per rule
 
 ## Git Conflicts
 

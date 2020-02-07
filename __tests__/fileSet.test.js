@@ -29,7 +29,7 @@ describe("combineFileSets", () => {
 });
 
 describe("compareFileSets", () => {
-  it("returns an error for each rule that increases", () => {
+  it("returns an error for each rule that is picked up by the warningsIncreased guard", () => {
     const result = compareFileSets(
       {
         "foo.js": {
@@ -50,10 +50,132 @@ describe("compareFileSets", () => {
         }
       }
     );
-
     expect(result).toHaveLength(2);
   });
-
+  it("should return an error for each rule that is picked up by the warningsIncreased and warningsReduced guards", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10,
+          rule2: 10
+        },
+        "bar.js": {
+          rule3: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 12,
+          rule2: 10
+        },
+        "bar.js": {
+          rule3: 12
+        }
+      },
+      {
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
+      }
+    );
+    expect(result).toHaveLength(5);
+  });
+  it("should not return an error for rules that pass the warningsReduced guards", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10,
+          rule2: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 4,
+          rule2: 4
+        }
+      },
+      {
+        guards: ["warningsReducedBy"],
+        reduceWarningsBy: 0.5
+      }
+    );
+    expect(result).toHaveLength(0);
+  });
+  it("should return an error if warnings are not reduced", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 10
+        }
+      },
+      {
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
+      }
+    );
+    expect(result).toHaveLength(1);
+  });
+  it("should return an error if warnings not reduced but not by the given value", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 9
+        }
+      },
+      {
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
+      }
+    );
+    expect(result).toHaveLength(1);
+  });
+  it("should not return an error if warnings are reduced by the given value", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 4
+        }
+      },
+      {
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
+      }
+    );
+    expect(result).toHaveLength(0);
+  });
+  it("should not return an error if warnings are completely removed", () => {
+    const result = compareFileSets(
+      {
+        "foo.js": {
+          rule1: 10
+        }
+      },
+      {
+        "foo.js": {
+          rule1: 0
+        }
+      },
+      {
+        reduceWarningsBy: 0.5,
+        guards: ["warningsReducedBy"]
+      }
+    );
+    expect(result).toHaveLength(0);
+  });
   it("returns an error if rule surfaces", () => {
     const result = compareFileSets(
       {},
