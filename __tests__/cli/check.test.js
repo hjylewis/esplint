@@ -47,7 +47,7 @@ it("should pass default options to engine", () => {
   cli([]);
 
   expect(run).toHaveBeenCalledWith(
-    { write: true, overwrite: false, stageRecordFile: false },
+    { write: true, overwrite: false, stageRecordFile: false, workingDir: "" },
     expect.anything()
   );
 });
@@ -62,6 +62,11 @@ it("should pass --overwrite option to engine", () => {
   cli(["--overwrite"]);
 
   expect(run.mock.calls[0][0].overwrite).toEqual(true);
+});
+
+it("should pass --working-dir option to engine", () => {
+  cli(["--working-dir", "./example"]);
+  expect(run.mock.calls[0][0].workingDir).toEqual("./example");
 });
 
 it("should print exception and exit with error code", () => {

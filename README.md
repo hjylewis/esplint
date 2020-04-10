@@ -90,6 +90,7 @@ Options:
   --no-write   Don't update record file               [boolean] [default: false]
   --stage-record-file  Git add record file. Helpful when running esplint on a
                        pre-commit hook.               [boolean] [default: false]
+  --working-dir directory from which config can be read from and record file written to [string] [default: ""]
 ```
 
 ### `esplint`
