@@ -178,6 +178,27 @@ describe("createFileSet", () => {
       "bar.js": {}
     });
   });
+
+  it("should unify windows- and posix paths into posix paths", () => {
+    const result = createFileSet(
+      [
+        {
+          filePath: "\\absolute\\path\\windows\\foo.js",
+          messages: []
+        },
+        {
+          filePath: "/absolute/path/posix/bar.js",
+          messages: []
+        }
+      ],
+      []
+    );
+
+    expect(result).toEqual({
+      "windows/foo.js": {},
+      "posix/bar.js": {}
+    });
+  });
 });
 
 describe("cleanUpDeletedFilesInFileSet", () => {

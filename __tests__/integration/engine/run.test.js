@@ -135,6 +135,20 @@ describe("engine.run", () => {
   );
 
   it(
+    "should convert windows- to posix paths when reading a record",
+    setup("windows-paths-in-record", ({ fixturePath }) => {
+      const { run } = require("../../../lib/engine");
+      const { results } = run({}, ["."]);
+      expect(results).toHaveLength(0);
+
+      const rewrittenRecord = readRecord(fixturePath);
+      expect(rewrittenRecord.files).toEqual({
+        "src/main.js": { "no-console": 1 }
+      });
+    })
+  );
+
+  it(
     "ignores eslint rules not listed in config",
     setup("no-rules", () => {
       const { run } = require("../../../lib/engine");

@@ -1,0 +1,9 @@
+{
+  "recordVersion": 1,
+  "configHash": "773a8b36f5d74ada1b0144c983a6d725c71c9413",
+  "files": {
+    "src\\main.js": {
+      "no-console": 1
+    }
+  }
+}
