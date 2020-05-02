@@ -34,10 +34,10 @@
     "eslint-plugin-jest": "^22.16.0",
     "execa": "^2.0.3",
     "husky": "^3.0.4",
-    "jest": "^24.8.0",
+    "jest": "^25.5.3",
     "lint-staged": "^9.2.0",
     "prettier": "^1.13.6",
-    "standard-version": "^7.0.0",
+    "standard-version": "^7.1.0",
     "strip-ansi": "^5.0.0"
   },
   "peerDependencies": {
