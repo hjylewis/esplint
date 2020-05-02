@@ -1,9 +1,10 @@
 language: node_js
 node_js:
+  - "12"
   - "10"
-  - "9"
   - "8"
 env:
+  - ESLINT_VERSION=next
   - ESLINT_VERSION=6
   - ESLINT_VERSION=5
   - ESLINT_VERSION=4
