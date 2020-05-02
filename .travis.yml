@@ -2,6 +2,10 @@ language: node_js
 node_js:
   - "12"
   - "10"
+os:
+  - "linux"
+  - "osx"
+  - "windows"
 env:
   - ESLINT_VERSION=7
   - ESLINT_VERSION=6
