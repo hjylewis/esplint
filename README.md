@@ -128,7 +128,7 @@ module.exports = {
 The options are:
 
 - `surfaceArea` — An array of files and/or directories to track. Use `[ "." ]` to track all Javascript files in the current directory. These files and directories are used if no files or directories are specified from the CLI
-- `eslint` — ESLint cli (CLIEngine) [options](https://eslint.org/docs/developer-guide/nodejs-api#cliengine).
+- `eslint` — ESLint class [options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
 

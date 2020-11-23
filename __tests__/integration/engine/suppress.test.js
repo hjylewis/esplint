@@ -13,9 +13,9 @@ describe("engine.suppress", () => {
 
   it(
     "should insert a disable-eslint comment before each violation",
-    setup("increase-warning", ({ fixturePath }) => {
+    setup("increase-warning", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-console"], ["."]);
+      await suppress(["no-console"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
@@ -33,9 +33,9 @@ describe("engine.suppress", () => {
 
   it(
     "should handle no violations",
-    setup("increase-warning", ({ fixturePath }) => {
+    setup("increase-warning", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-extra-semi"], ["."]);
+      await suppress(["no-extra-semi"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
@@ -46,9 +46,9 @@ describe("engine.suppress", () => {
 
   it(
     "should insert disable-eslint comment for multiple files",
-    setup("multiple-files-no-record", ({ fixturePath }) => {
+    setup("multiple-files-no-record", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-console"], ["."]);
+      await suppress(["no-console"], ["."]);
 
       ["index.js", "anotherFile.js"].forEach(filename => {
         const lines = readFile(fixturePath, filename)
@@ -68,9 +68,9 @@ describe("engine.suppress", () => {
 
   it(
     "should insert disable-eslint comment for multiple rules",
-    setup("extra-semi", ({ fixturePath }) => {
+    setup("extra-semi", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-console", "no-extra-semi"], ["."]);
+      await suppress(["no-console", "no-extra-semi"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
@@ -85,9 +85,9 @@ describe("engine.suppress", () => {
 
   it(
     "should preserve existing disable-eslint comments",
-    setup("suppressed-extra-semi", ({ fixturePath }) => {
+    setup("suppressed-extra-semi", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-console", "no-extra-semi"], ["."]);
+      await suppress(["no-console", "no-extra-semi"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
@@ -102,9 +102,9 @@ describe("engine.suppress", () => {
 
   it(
     "should preserve leading whitespace",
-    setup("new-file-with-error", ({ fixturePath }) => {
+    setup("new-file-with-error", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-console"], ["."]);
+      await suppress(["no-console"], ["."]);
 
       const lines = readFile(fixturePath, "newFile.js")
         .split("\n")
@@ -122,9 +122,9 @@ describe("engine.suppress", () => {
 
   it(
     "should only suppress the rules passed as arguments",
-    setup("extra-semi", ({ fixturePath }) => {
+    setup("extra-semi", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-extra-semi"], ["."]);
+      await suppress(["no-extra-semi"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
@@ -139,9 +139,9 @@ describe("engine.suppress", () => {
 
   it(
     "should respect eslint configuration",
-    setup("config-with-globals", ({ fixturePath }) => {
+    setup("config-with-globals", async ({ fixturePath }) => {
       const { suppress } = require("../../../lib/engine");
-      suppress(["no-undef"], ["."]);
+      await suppress(["no-undef"], ["."]);
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
