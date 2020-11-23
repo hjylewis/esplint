@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/hjylewis/esplint#readme",
   "devDependencies": {
-    "eslint": "^6.1.0",
+    "eslint": "^7.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-jest": "^22.16.0",
     "execa": "^2.0.3",
