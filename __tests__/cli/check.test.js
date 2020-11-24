@@ -87,12 +87,15 @@ it("should print message of EsplintError and exit with error code", () => {
   expect(process.exit).toHaveBeenCalledWith(1);
 });
 
-it("should print tip and exit with error code if there was an error", () => {
-  run.mockReturnValue({
+it("should print tip and exit with error code if there was an error", async () => {
+  const runPromise = Promise.resolve({
     results: [],
     hasError: true
   });
+  run.mockReturnValue(runPromise);
   cli([]);
+
+  await runPromise;
 
   expect(stripAnsi(log.log.mock.calls[0][0]).trim()).toEqual(
     "Use the --overwrite flag to ignore these errors and force the record to be rewritten."
@@ -100,26 +103,31 @@ it("should print tip and exit with error code if there was an error", () => {
   expect(process.exit).toHaveBeenCalledWith(1);
 });
 
-it("should show success message if no errors", () => {
-  run.mockReturnValue({
+it("should show success message if no errors", async () => {
+  const runPromise = Promise.resolve({
     results: [],
     hasError: false
   });
+  run.mockReturnValue(runPromise);
   cli([]);
+
+  await runPromise;
 
   expect(log.log).toHaveBeenCalledWith(log.createSuccess("Looking good!"));
 });
 
 it("should stage record file if flag is passed", async () => {
-  run.mockReturnValue({
+  const runPromise = Promise.resolve({
     results: [],
     hasError: false
   });
+  run.mockReturnValue(runPromise);
   const gitAddPromise = Promise.resolve();
   git().add.mockReturnValue(gitAddPromise);
 
   cli(["--stage-record-file"]);
 
+  await runPromise;
   await gitAddPromise;
 
   expect(log.log).toHaveBeenCalledWith(
@@ -132,8 +140,8 @@ it("should stage record file if flag is passed", async () => {
   expect(log.log).toHaveBeenCalledWith("Record file staged.");
 });
 
-it("should properly log the results", () => {
-  run.mockReturnValue({
+it("should properly log the results", async () => {
+  const runPromise = Promise.resolve({
     results: [
       {
         type: "error",
@@ -150,8 +158,11 @@ it("should properly log the results", () => {
     ],
     hasError: true
   });
+  run.mockReturnValue(runPromise);
 
   cli([]);
+
+  await runPromise;
 
   expect(log.error).toHaveBeenCalledWith(log.createError("this is an error"));
   expect(log.warn).toHaveBeenCalledWith(

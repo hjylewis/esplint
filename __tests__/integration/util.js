@@ -30,9 +30,9 @@ function fixtureInit(id) {
 
   function setup(fixtureName, test) {
     const fixturePath = getFixturePath(fixtureName);
-    return (...args) => {
+    return async (...args) => {
       process.chdir(fixturePath);
-      test({ fixturePath }, ...args);
+      await test({ fixturePath }, ...args);
       resetFixturePath(fixtureName);
     };
   }

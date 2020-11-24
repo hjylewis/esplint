@@ -81,8 +81,8 @@ describe("compareFileSets", () => {
 describe("createFileSet", () => {
   process.cwd = () => "/absolute/path";
 
-  it("counts rule violations per file", () => {
-    const result = createFileSet(
+  it("counts rule violations per file", async () => {
+    const result = await createFileSet(
       [
         {
           filePath: "/absolute/path/foo.js",
@@ -116,8 +116,8 @@ describe("createFileSet", () => {
     });
   });
 
-  it("defaults give rules to 0", () => {
-    const result = createFileSet(
+  it("defaults give rules to 0", async () => {
+    const result = await createFileSet(
       [
         {
           filePath: "/absolute/path/foo.js",
@@ -149,8 +149,8 @@ describe("createFileSet", () => {
     });
   });
 
-  it("only tracks rules specified rules", () => {
-    const result = createFileSet(
+  it("only tracks rules specified rules", async () => {
+    const result = await createFileSet(
       [
         {
           filePath: "/absolute/path/foo.js",
@@ -179,8 +179,8 @@ describe("createFileSet", () => {
     });
   });
 
-  it("should unify windows- and posix paths into posix paths", () => {
-    const result = createFileSet(
+  it("should unify windows- and posix paths into posix paths", async () => {
+    const result = await createFileSet(
       [
         {
           filePath: "\\absolute\\path\\windows\\foo.js",

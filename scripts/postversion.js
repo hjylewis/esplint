@@ -2,12 +2,12 @@ const { version } = require("../package");
 const fs = require("fs");
 const execa = require("execa");
 
-function updateExample() {
+async function updateExample() {
   process.chdir("./example");
 
   // Update .esplint.rec.json
   const { run } = require("../lib/engine");
-  run(
+  await run(
     {
       overwrite: true
     },
