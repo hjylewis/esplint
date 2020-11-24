@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.9.0](https://github.com/hjylewis/esplint/compare/v0.8.2...v0.9.0) (2020-11-24)
+
+
+### ⚠ BREAKING CHANGES
+
+* esplint configuration property eslint now only accepts Eslint class options https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoption if using eslint@7+.
+
+### Features
+
+* Use new Eslint class instead of CLIEngine when available ([#94](https://github.com/hjylewis/esplint/issues/94)) ([d06aa01](https://github.com/hjylewis/esplint/commit/d06aa01a6308ff68db9c49851bb4f2fefe7e85e8))
+
 ### [0.8.2](https://github.com/hjylewis/esplint/compare/v0.8.1...v0.8.2) (2020-10-14)
 
 ### [0.8.1](https://github.com/hjylewis/esplint/compare/v0.8.0...v0.8.1) (2020-04-30)
