@@ -105,6 +105,24 @@ it("should print tip and exit with error code if there was an error", async () =
 
 it("should show success message if no errors", async () => {
   const runPromise = Promise.resolve({
+    results: [
+      {
+        type: "info",
+        message: "this is info"
+      }
+    ],
+    hasError: false
+  });
+  run.mockReturnValue(runPromise);
+  cli([]);
+
+  await runPromise;
+
+  expect(log.log).toHaveBeenCalledWith(log.createSuccess("Looking good!"));
+});
+
+it("should show success message if the only results are info types", async () => {
+  const runPromise = Promise.resolve({
     results: [],
     hasError: false
   });
