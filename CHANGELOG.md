@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.1](https://github.com/hjylewis/esplint/compare/v0.9.0...v0.9.1) (2020-12-11)
+
+
+### Bug Fixes
+
+* Allow stage on info ([#96](https://github.com/hjylewis/esplint/issues/96)) ([8488839](https://github.com/hjylewis/esplint/commit/848883942b800585726907993250d080cb77688b))
+
 ## [0.9.0](https://github.com/hjylewis/esplint/compare/v0.8.2...v0.9.0) (2020-11-24)
 
 
