@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.2](https://github.com/hjylewis/esplint/compare/v0.9.1...v0.9.2) (2021-01-05)
+
+
+### Bug Fixes
+
+* grammar, increase to increased ([#97](https://github.com/hjylewis/esplint/issues/97)) ([51559b0](https://github.com/hjylewis/esplint/commit/51559b0ddb759c7ce16e7212d13a87cc567e72ab))
+
 ### [0.9.1](https://github.com/hjylewis/esplint/compare/v0.9.0...v0.9.1) (2020-12-11)
 
 
