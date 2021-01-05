@@ -2,7 +2,7 @@
 
 exports[`engine.run prints error if increase in eslint warnings 1`] = `
 Object {
-  "message": "Warnings of [1m\\"no-console\\"[22m have increase by +1 in \\"index.js\\"",
+  "message": "Warnings of [1m\\"no-console\\"[22m have increased by +1 in \\"index.js\\"",
   "type": "error",
 }
 `;
@@ -23,7 +23,7 @@ Object {
 
 exports[`engine.run still makes checks if "write" option is false 1`] = `
 Object {
-  "message": "Warnings of [1m\\"no-console\\"[22m have increase by +1 in \\"index.js\\"",
+  "message": "Warnings of [1m\\"no-console\\"[22m have increased by +1 in \\"index.js\\"",
   "type": "error",
 }
 `;
