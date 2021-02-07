@@ -17,6 +17,36 @@ beforeEach(() => {
   log.warn.mockReset();
 });
 
+const mockedRuleStatsWithViolations = {
+  "no-console": {
+    count: 2,
+    files: ["index.js", "not-index.js"]
+  },
+  "other-rule": {
+    count: 100,
+    files: ["file.js", "other-file.js", "other-other-file.js"]
+  },
+  "no-violations": {
+    count: 0,
+    files: []
+  }
+};
+
+const mockedRuleStatsWithoutViolations = {
+  "no-console": {
+    count: 0,
+    files: []
+  },
+  "other-rule": {
+    count: 0,
+    files: []
+  },
+  "no-violations": {
+    count: 0,
+    files: []
+  }
+};
+
 it("should print warning when record file doesn't exist", () => {
   getRuleStats.mockReturnValue(null);
   cli(["stats"]);
@@ -29,20 +59,7 @@ it("should print warning when record file doesn't exist", () => {
 });
 
 it("should print the count and list files per rule", () => {
-  getRuleStats.mockReturnValue({
-    "no-console": {
-      count: 2,
-      files: ["index.js", "not-index.js"]
-    },
-    "other-rule": {
-      count: 100,
-      files: ["file.js", "other-file.js", "other-other-file.js"]
-    },
-    "no-violations": {
-      count: 0,
-      files: []
-    }
-  });
+  getRuleStats.mockReturnValue(mockedRuleStatsWithViolations);
   cli(["stats"]);
 
   expect(log.log).toHaveBeenCalled();
@@ -73,20 +90,7 @@ it("should print the count and list files per rule", () => {
 });
 
 it("should print the count and list files per rule", () => {
-  getRuleStats.mockReturnValue({
-    "no-console": {
-      count: 0,
-      files: []
-    },
-    "other-rule": {
-      count: 0,
-      files: []
-    },
-    "no-violations": {
-      count: 0,
-      files: []
-    }
-  });
+  getRuleStats.mockReturnValue(mockedRuleStatsWithoutViolations);
   cli(["stats"]);
 
   expect(log.log).toHaveBeenCalled();
@@ -104,6 +108,52 @@ it("should print the count and list files per rule", () => {
 
     /"other-rule": 0/,
     /No files/,
+
+    /No violations!/
+  ];
+
+  output.forEach((line, i) => {
+    expect(line).toMatch(expectedOutput[i]);
+  });
+});
+
+it("should print the count and list files per rule in compact mode", () => {
+  getRuleStats.mockReturnValue(mockedRuleStatsWithViolations);
+  cli(["stats", "--compact"]);
+
+  expect(log.log).toHaveBeenCalled();
+  const output = stripAnsi(log.log.mock.calls[0][0])
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => l.length > 0);
+
+  const expectedOutput = [
+    /"no-console": 2/,
+    /"no-violations": 0/,
+    /"other-rule": 100/,
+
+    /Total: 102/
+  ];
+
+  output.forEach((line, i) => {
+    expect(line).toMatch(expectedOutput[i]);
+  });
+});
+
+it("should print the count and list files per rule in compact mode", () => {
+  getRuleStats.mockReturnValue(mockedRuleStatsWithoutViolations);
+  cli(["stats", "--compact"]);
+
+  expect(log.log).toHaveBeenCalled();
+  const output = stripAnsi(log.log.mock.calls[0][0])
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => l.length > 0);
+
+  const expectedOutput = [
+    /"no-console": 0/,
+    /"no-violations": 0/,
+    /"other-rule": 0/,
 
     /No violations!/
   ];
