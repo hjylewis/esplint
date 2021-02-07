@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.9.3](https://github.com/hjylewis/esplint/compare/v0.9.2...v0.9.3) (2021-02-07)
+
+
+### Features
+
+* Add compact mode for stats cli command ([#99](https://github.com/hjylewis/esplint/issues/99)) ([2b1a66f](https://github.com/hjylewis/esplint/commit/2b1a66fa184a0ac652c523711f1a889000cc9955))
+
 ### [0.9.2](https://github.com/hjylewis/esplint/compare/v0.9.1...v0.9.2) (2021-01-05)
 
 
