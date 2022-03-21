@@ -59,7 +59,7 @@ describe("engine.run", () => {
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
       expect(results[0].type).toEqual("error");
-      expect(results[0]).toMatchSnapshot();
+      expect(stripAnsi(results[0])).toMatchSnapshot();
     })
   );
 
@@ -95,7 +95,7 @@ describe("engine.run", () => {
 
       // Get same result
       expect(result1).toMatchObject(result2);
-      expect(result1).toMatchSnapshot();
+      expect(stripAnsi(result1)).toMatchSnapshot();
 
       // Hide file
       const record = readRecord(fixturePath);
@@ -122,7 +122,7 @@ describe("engine.run", () => {
 
       // Get same result
       expect(result1).toMatchObject(result2);
-      expect(result1).toMatchSnapshot();
+      expect(stripAnsi(result1)).toMatchSnapshot();
     })
   );
 
@@ -309,7 +309,7 @@ describe("engine.run", () => {
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
       expect(results[0].type).toEqual("error");
-      expect(results[0]).toMatchSnapshot();
+      expect(stripAnsi(results[0])).toMatchSnapshot();
     })
   );
 
