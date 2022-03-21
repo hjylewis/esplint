@@ -3,11 +3,11 @@ const { run } = require("../../lib/engine");
 const log = require("../../lib/log");
 const stripAnsi = require("strip-ansi");
 const EsplintError = require("../../lib/EsplintError");
-const git = require("simple-git/promise");
+const git = require("simple-git");
 
 jest.mock("../../lib/engine");
 jest.mock("../../lib/log");
-jest.mock("simple-git/promise", () => {
+jest.mock("simple-git", () => {
   const gitAdd = jest.fn();
   return () => ({
     add: gitAdd
