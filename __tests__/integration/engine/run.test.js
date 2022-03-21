@@ -59,7 +59,9 @@ describe("engine.run", () => {
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
       expect(results[0].type).toEqual("error");
-      expect(results[0]).toMatchSnapshot();
+      expect(stripAnsi(results[0].message)).toEqual(
+        'Warnings of "no-console" have increased by +1 in "index.js"'
+      );
     })
   );
 
@@ -95,7 +97,10 @@ describe("engine.run", () => {
 
       // Get same result
       expect(result1).toMatchObject(result2);
-      expect(result1).toMatchSnapshot();
+      expect(result1.type).toEqual("info");
+      expect(stripAnsi(result1.message)).toEqual(
+        'No "no-console" warnings are being reported. You can turn it on as an error!'
+      );
 
       // Hide file
       const record = readRecord(fixturePath);
@@ -122,7 +127,10 @@ describe("engine.run", () => {
 
       // Get same result
       expect(result1).toMatchObject(result2);
-      expect(result1).toMatchSnapshot();
+      expect(result1.type).toEqual("info");
+      expect(stripAnsi(result1.message)).toEqual(
+        'No "no-console" warnings are being reported. You can turn it on as an error!'
+      );
     })
   );
 
@@ -309,7 +317,9 @@ describe("engine.run", () => {
       expect(hasError).toEqual(true);
       expect(results).toHaveLength(1);
       expect(results[0].type).toEqual("error");
-      expect(results[0]).toMatchSnapshot();
+      expect(stripAnsi(results[0].message)).toEqual(
+        'Warnings of "no-console" have increased by +1 in "index.js"'
+      );
     })
   );
 
