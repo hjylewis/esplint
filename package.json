@@ -41,7 +41,7 @@
     "strip-ansi": "^6.0.0"
   },
   "peerDependencies": {
-    "eslint": ">=4.19.1"
+    "eslint": ">=7.0.0"
   },
   "dependencies": {
     "chalk": "^4.0.0",
