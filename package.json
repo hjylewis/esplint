@@ -38,7 +38,7 @@
     "lint-staged": "^12.3.7",
     "prettier": "^2.6.0",
     "standard-version": "^9.3.2",
-    "strip-ansi": "^5.0.0"
+    "strip-ansi": "^6.0.0"
   },
   "peerDependencies": {
     "eslint": ">=4.19.1"
