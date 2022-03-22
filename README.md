@@ -1,7 +1,7 @@
 # esplint
 
 [![npm](https://img.shields.io/npm/v/esplint.svg?style=flat-square)](https://www.npmjs.com/package/esplint)
-[![Build Status](https://img.shields.io/travis/hjylewis/esplint/master.svg?style=flat-square)](https://travis-ci.org/hjylewis/esplint)
+[![Build Status](https://img.shields.io/github/workflow/status/hjylewis/esplint/Validation%20CI?label=CI&style=flat-square)](https://github.com/hjylewis/esplint/actions/workflows/validate.yml)
 [![codecov](https://img.shields.io/codecov/c/github/hjylewis/esplint/master?style=flat-square)](https://codecov.io/gh/hjylewis/esplint)
 [![npm](https://img.shields.io/npm/l/esplint.svg?style=flat-square)](https://github.com/hjylewis/esplint/blob/master/LICENSE)
 
