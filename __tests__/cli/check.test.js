@@ -3,14 +3,14 @@ const { run } = require("../../lib/engine");
 const log = require("../../lib/log");
 const stripAnsi = require("strip-ansi");
 const EsplintError = require("../../lib/EsplintError");
-const git = require("simple-git/promise");
+const git = require("simple-git");
 
 jest.mock("../../lib/engine");
 jest.mock("../../lib/log");
-jest.mock("simple-git/promise", () => {
+jest.mock("simple-git", () => {
   const gitAdd = jest.fn();
   return () => ({
-    add: gitAdd
+    add: gitAdd,
   });
 });
 process.exit = jest.fn();
@@ -19,7 +19,7 @@ beforeEach(() => {
   run.mockReset();
   run.mockImplementation(() => ({
     results: [],
-    hasError: false
+    hasError: false,
   }));
 
   process.argv = [];
@@ -76,7 +76,7 @@ it("should print exception and exit with error code", () => {
 });
 
 it("should print message of EsplintError and exit with error code", () => {
-  log.createError.mockImplementation(i => i);
+  log.createError.mockImplementation((i) => i);
   run.mockImplementation(() => {
     throw new EsplintError("this is an error");
   });
@@ -90,7 +90,7 @@ it("should print message of EsplintError and exit with error code", () => {
 it("should print tip and exit with error code if there was an error", async () => {
   const runPromise = Promise.resolve({
     results: [],
-    hasError: true
+    hasError: true,
   });
   run.mockReturnValue(runPromise);
   cli([]);
@@ -108,10 +108,10 @@ it("should show success message if no errors", async () => {
     results: [
       {
         type: "info",
-        message: "this is info"
-      }
+        message: "this is info",
+      },
     ],
-    hasError: false
+    hasError: false,
   });
   run.mockReturnValue(runPromise);
   cli([]);
@@ -124,7 +124,7 @@ it("should show success message if no errors", async () => {
 it("should show success message if the only results are info types", async () => {
   const runPromise = Promise.resolve({
     results: [],
-    hasError: false
+    hasError: false,
   });
   run.mockReturnValue(runPromise);
   cli([]);
@@ -137,7 +137,7 @@ it("should show success message if the only results are info types", async () =>
 it("should stage record file if flag is passed", async () => {
   const runPromise = Promise.resolve({
     results: [],
-    hasError: false
+    hasError: false,
   });
   run.mockReturnValue(runPromise);
   const gitAddPromise = Promise.resolve();
@@ -153,7 +153,7 @@ it("should stage record file if flag is passed", async () => {
   );
   expect(git().add).toHaveBeenCalledTimes(1);
   expect(git().add).toHaveBeenCalledWith([
-    expect.stringContaining(".esplint.rec.json")
+    expect.stringContaining(".esplint.rec.json"),
   ]);
   expect(log.log).toHaveBeenCalledWith("Record file staged.");
 });
@@ -163,18 +163,18 @@ it("should properly log the results", async () => {
     results: [
       {
         type: "error",
-        message: "this is an error"
+        message: "this is an error",
       },
       {
         type: "warning",
-        message: "this is an warning"
+        message: "this is an warning",
       },
       {
         type: "info",
-        message: "this is info"
-      }
+        message: "this is info",
+      },
     ],
-    hasError: true
+    hasError: true,
   });
   run.mockReturnValue(runPromise);
 

@@ -5,7 +5,7 @@ describe("createRecord", () => {
   it("attaches current version", () => {
     const { recordVersion } = createRecord({
       config: { rules: [], __originalConfig: { rules: [] } },
-      files: {}
+      files: {},
     });
     expect(recordVersion).toEqual(1);
   });
@@ -15,15 +15,15 @@ describe("createRecord", () => {
       config: { rules: [], __originalConfig: { rules: [] } },
       files: {
         "z/a/c": {
-          rule: 1
+          rule: 1,
         },
         "b/b/c": {
-          rule: 1
+          rule: 1,
         },
         "a/b/c": {
-          rule: 1
-        }
-      }
+          rule: 1,
+        },
+      },
     });
     expect(Object.keys(files)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);
   });
@@ -35,16 +35,16 @@ describe("unifyFilePaths", () => {
       hash: "aabbcc",
       files: {
         "\\windows\\path.js": {},
-        "\\another\\windows\\path.js": {}
-      }
+        "\\another\\windows\\path.js": {},
+      },
     };
     const unifiedRecord = unifyFilePaths(record);
     expect(unifiedRecord).toEqual({
       hash: "aabbcc",
       files: {
         "/windows/path.js": {},
-        "/another/windows/path.js": {}
-      }
+        "/another/windows/path.js": {},
+      },
     });
   });
   it("keeps posix paths as posix", () => {
@@ -52,8 +52,8 @@ describe("unifyFilePaths", () => {
       hash: "aabbcc",
       files: {
         "/windows/path.js": {},
-        "/another/windows/path.js": {}
-      }
+        "/another/windows/path.js": {},
+      },
     };
     const unifiedRecord = unifyFilePaths(record);
     expect(unifiedRecord).toEqual(record);

@@ -1,7 +1,7 @@
 const { toPosixPath, toSystemPath, toWinPath } = require("../lib/pathUtils");
 const helpers = require("../lib/helpers");
 
-describe("toPosixPath", function() {
+describe("toPosixPath", function () {
   it("should convert windows to posix paths", () => {
     expect(toPosixPath("\\windows\\path")).toEqual("/windows/path");
   });
@@ -10,7 +10,7 @@ describe("toPosixPath", function() {
   });
 });
 
-describe("toWinPath", function() {
+describe("toWinPath", function () {
   it("should convert posix to windows path", () => {
     expect(toWinPath("/posix/path")).toEqual("\\posix\\path");
   });
