@@ -55,10 +55,10 @@ function fixtureInit(id) {
     readFile,
     onBeforeAll,
     onAfterEach,
-    onAfterAll
+    onAfterAll,
   };
 }
 
 module.exports = {
-  fixtureInit
+  fixtureInit,
 };

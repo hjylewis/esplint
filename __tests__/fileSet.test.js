@@ -4,7 +4,7 @@ const {
   createFileSet,
   cleanUpDeletedFilesInFileSet,
   cleanUpWarninglessFilesInFileSet,
-  sortFileSet
+  sortFileSet,
 } = require("../lib/fileSet");
 const fs = require("fs");
 jest.mock("fs");
@@ -14,13 +14,13 @@ describe("combineFileSets", () => {
     const result = combineFileSets(
       {
         "foobar.js": {
-          rule: 10
-        }
+          rule: 10,
+        },
       },
       {
         "foobar.js": {
-          rule: 8
-        }
+          rule: 8,
+        },
       }
     );
 
@@ -34,20 +34,20 @@ describe("compareFileSets", () => {
       {
         "foo.js": {
           rule1: 10,
-          rule2: 10
+          rule2: 10,
         },
         "bar.js": {
-          rule3: 10
-        }
+          rule3: 10,
+        },
       },
       {
         "foo.js": {
           rule1: 12,
-          rule2: 10
+          rule2: 10,
         },
         "bar.js": {
-          rule3: 12
-        }
+          rule3: 12,
+        },
       }
     );
 
@@ -59,8 +59,8 @@ describe("compareFileSets", () => {
       {},
       {
         "bar.js": {
-          rule: 1
-        }
+          rule: 1,
+        },
       }
     );
 
@@ -70,8 +70,8 @@ describe("compareFileSets", () => {
   it("returns nothing is old fileSet doesn't exist", () => {
     const result = compareFileSets(null, {
       "bar.js": {
-        rule: 1
-      }
+        rule: 1,
+      },
     });
 
     expect(result).toHaveLength(0);
@@ -89,30 +89,30 @@ describe("createFileSet", () => {
           messages: [
             { ruleId: "rule1" },
             { ruleId: "rule1" },
-            { ruleId: "rule1" }
-          ]
+            { ruleId: "rule1" },
+          ],
         },
         {
           filePath: "/absolute/path/bar.js",
           messages: [
             { ruleId: "rule1" },
             { ruleId: "rule2" },
-            { ruleId: "rule3" }
-          ]
-        }
+            { ruleId: "rule3" },
+          ],
+        },
       ],
       ["rule1", "rule2", "rule3"]
     );
 
     expect(result).toEqual({
       "foo.js": {
-        rule1: 3
+        rule1: 3,
       },
       "bar.js": {
         rule1: 1,
         rule2: 1,
-        rule3: 1
-      }
+        rule3: 1,
+      },
     });
   });
 
@@ -124,16 +124,16 @@ describe("createFileSet", () => {
           messages: [
             { ruleId: "rule1" },
             { ruleId: "rule1" },
-            { ruleId: "rule1" }
-          ]
+            { ruleId: "rule1" },
+          ],
         },
         {
           filePath: "/absolute/path/bar.js",
-          messages: []
-        }
+          messages: [],
+        },
       ],
       ["rule1", "rule2"],
-      filename => {
+      (filename) => {
         return filename === "foo.js" ? ["rule1", "rule2"] : ["rule2"];
       }
     );
@@ -141,11 +141,11 @@ describe("createFileSet", () => {
     expect(result).toEqual({
       "foo.js": {
         rule1: 3,
-        rule2: 0
+        rule2: 0,
       },
       "bar.js": {
-        rule2: 0
-      }
+        rule2: 0,
+      },
     });
   });
 
@@ -157,25 +157,25 @@ describe("createFileSet", () => {
           messages: [
             { ruleId: "rule1" },
             { ruleId: "rule1" },
-            { ruleId: "rule1" }
-          ]
+            { ruleId: "rule1" },
+          ],
         },
         {
           filePath: "/absolute/path/bar.js",
-          messages: []
-        }
+          messages: [],
+        },
       ],
       ["rule1"],
-      filename => {
+      (filename) => {
         return filename === "foo.js" ? ["rule1", "rule2"] : ["rule2"];
       }
     );
 
     expect(result).toEqual({
       "foo.js": {
-        rule1: 3
+        rule1: 3,
       },
-      "bar.js": {}
+      "bar.js": {},
     });
   });
 
@@ -184,19 +184,19 @@ describe("createFileSet", () => {
       [
         {
           filePath: "\\absolute\\path\\windows\\foo.js",
-          messages: []
+          messages: [],
         },
         {
           filePath: "/absolute/path/posix/bar.js",
-          messages: []
-        }
+          messages: [],
+        },
       ],
       []
     );
 
     expect(result).toEqual({
       "windows/foo.js": {},
-      "posix/bar.js": {}
+      "posix/bar.js": {},
     });
   });
 });
@@ -210,12 +210,12 @@ describe("cleanUpDeletedFilesInFileSet", () => {
     const result = cleanUpDeletedFilesInFileSet({
       file1: {},
       file2: {},
-      file3: {}
+      file3: {},
     });
 
     expect(result).toEqual({
       file1: {},
-      file3: {}
+      file3: {},
     });
   });
 });
@@ -225,20 +225,20 @@ describe("cleanUpWarninglessFilesInFileSet", () => {
     const result = cleanUpWarninglessFilesInFileSet({
       file1: {
         rule1: 0,
-        rule2: 0
+        rule2: 0,
       },
       file2: {},
       file3: {
         rule1: 1,
-        rule2: 1
-      }
+        rule2: 1,
+      },
     });
 
     expect(result).toEqual({
       file3: {
         rule1: 1,
-        rule2: 1
-      }
+        rule2: 1,
+      },
     });
   });
 
@@ -246,24 +246,24 @@ describe("cleanUpWarninglessFilesInFileSet", () => {
     const result = cleanUpWarninglessFilesInFileSet({
       file1: {
         rule1: 0,
-        rule2: 1
+        rule2: 1,
       },
       file2: {},
       file3: {
         rule1: 0,
         rule2: 1,
-        rule3: 3
-      }
+        rule3: 3,
+      },
     });
 
     expect(result).toEqual({
       file1: {
-        rule2: 1
+        rule2: 1,
       },
       file3: {
         rule2: 1,
-        rule3: 3
-      }
+        rule3: 3,
+      },
     });
   });
 });
@@ -275,7 +275,7 @@ describe("sortFileSet", () => {
     const result = sortFileSet({
       "z/a/c": {},
       "b/b/c": {},
-      "a/b/c": {}
+      "a/b/c": {},
     });
 
     expect(Object.keys(result)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);

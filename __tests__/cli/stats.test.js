@@ -20,31 +20,31 @@ beforeEach(() => {
 const mockedRuleStatsWithViolations = {
   "no-console": {
     count: 2,
-    files: ["index.js", "not-index.js"]
+    files: ["index.js", "not-index.js"],
   },
   "other-rule": {
     count: 100,
-    files: ["file.js", "other-file.js", "other-other-file.js"]
+    files: ["file.js", "other-file.js", "other-other-file.js"],
   },
   "no-violations": {
     count: 0,
-    files: []
-  }
+    files: [],
+  },
 };
 
 const mockedRuleStatsWithoutViolations = {
   "no-console": {
     count: 0,
-    files: []
+    files: [],
   },
   "other-rule": {
     count: 0,
-    files: []
+    files: [],
   },
   "no-violations": {
     count: 0,
-    files: []
-  }
+    files: [],
+  },
 };
 
 it("should print warning when record file doesn't exist", () => {
@@ -65,8 +65,8 @@ it("should print the count and list files per rule", () => {
   expect(log.log).toHaveBeenCalled();
   const output = stripAnsi(log.log.mock.calls[0][0])
     .split("\n")
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
   const expectedOutput = [
     /"no-console": 2/,
@@ -81,7 +81,7 @@ it("should print the count and list files per rule", () => {
     /other-file\.js/,
     /other-other-file\.js/,
 
-    /Total: 102/
+    /Total: 102/,
   ];
 
   output.forEach((line, i) => {
@@ -96,8 +96,8 @@ it("should print the count and list files per rule", () => {
   expect(log.log).toHaveBeenCalled();
   const output = stripAnsi(log.log.mock.calls[0][0])
     .split("\n")
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
   const expectedOutput = [
     /"no-console": 0/,
@@ -109,7 +109,7 @@ it("should print the count and list files per rule", () => {
     /"other-rule": 0/,
     /No files/,
 
-    /No violations!/
+    /No violations!/,
   ];
 
   output.forEach((line, i) => {
@@ -124,15 +124,15 @@ it("should print the count and list files per rule in compact mode", () => {
   expect(log.log).toHaveBeenCalled();
   const output = stripAnsi(log.log.mock.calls[0][0])
     .split("\n")
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
   const expectedOutput = [
     /"no-console": 2/,
     /"no-violations": 0/,
     /"other-rule": 100/,
 
-    /Total: 102/
+    /Total: 102/,
   ];
 
   output.forEach((line, i) => {
@@ -147,15 +147,15 @@ it("should print the count and list files per rule in compact mode", () => {
   expect(log.log).toHaveBeenCalled();
   const output = stripAnsi(log.log.mock.calls[0][0])
     .split("\n")
-    .map(l => l.trim())
-    .filter(l => l.length > 0);
+    .map((l) => l.trim())
+    .filter((l) => l.length > 0);
 
   const expectedOutput = [
     /"no-console": 0/,
     /"no-violations": 0/,
     /"other-rule": 0/,
 
-    /No violations!/
+    /No violations!/,
   ];
 
   output.forEach((line, i) => {

@@ -9,7 +9,7 @@ async function updateExample() {
   const { run } = require("../lib/engine");
   await run(
     {
-      overwrite: true
+      overwrite: true,
     },
     []
   );

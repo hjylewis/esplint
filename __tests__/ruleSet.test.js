@@ -3,7 +3,7 @@ const { compareRuleSets, createRuleSet } = require("../lib/ruleSet");
 describe("compareRuleSets", () => {
   it("returns warnings if rule has 0 warnings in ruleSet", () => {
     const result = compareRuleSets({
-      rule: 0
+      rule: 0,
     });
 
     expect(result).toHaveLength(1);
@@ -21,19 +21,19 @@ describe("createRuleSet", () => {
       {
         file1: {
           rule1: 5,
-          rule3: 10
+          rule3: 10,
         },
         file2: {
           rule1: 2,
-          rule2: 1
-        }
+          rule2: 1,
+        },
       },
       ["rule1", "rule2", "rule3"]
     );
     expect(result).toEqual({
       rule1: 7,
       rule2: 1,
-      rule3: 10
+      rule3: 10,
     });
   });
 
@@ -42,7 +42,7 @@ describe("createRuleSet", () => {
     expect(result).toEqual({
       rule1: 0,
       rule2: 0,
-      rule3: 0
+      rule3: 0,
     });
   });
 });
