@@ -5,12 +5,12 @@
   "bin": "index.js",
   "scripts": {
     "release": "standard-version --commit-all",
-    "test": "jest"
+    "test": "jest",
+    "prepare": "husky install"
   },
   "lint-staged": {
     "*.{js,json,md}": [
-      "prettier --write",
-      "git add"
+      "prettier --write"
     ]
   },
   "repository": {
@@ -53,11 +53,5 @@
     "semver": "^7.3.5",
     "simple-git": "^3.4.0",
     "yargs": "^14.0.0"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged",
-      "pre-push": "npm test"
-    }
   }
 }
