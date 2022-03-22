@@ -14,7 +14,7 @@
   "repository": {},
   "devDependencies": {
     "eslint": "^5.0.0",
-    "esplint": "^0.9.3",
+    "esplint": "^0.10.0",
     "lint-staged": "^7.2.0"
   }
 }
