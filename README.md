@@ -23,6 +23,11 @@ Install esplint as a dev dependency of your project.
 $ npm install esplint --save-dev
 ```
 
+esplint supports ESLint 7, 8, and 9, and works with both the new [flat
+config](https://eslint.org/docs/latest/use/configure/configuration-files)
+(`eslint.config.js`) and the legacy `.eslintrc.*` format. See
+[ESLint config support](#eslint-config-support).
+
 Create `.esplintrc.js` and add your [configurations](#configuration).
 
 ```js
@@ -128,9 +133,40 @@ module.exports = {
 The options are:
 
 - `surfaceArea` — An array of files and/or directories to track. Use `[ "." ]` to track all Javascript files in the current directory. These files and directories are used if no files or directories are specified from the CLI
-- `eslint` — ESLint class [options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
+- `eslint` — ESLint class [options](https://eslint.org/docs/latest/integrate/nodejs-api#-new-eslintoptions). esplint also accepts an esplint-specific `useFlatConfig` boolean here to force flat (`true`) or legacy/eslintrc (`false`) mode — see [ESLint config support](#eslint-config-support).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+
+## ESLint config support
+
+esplint supports ESLint 7, 8, and 9 and runs against whichever config format
+your project uses:
+
+- **Flat config** (`eslint.config.js` / `.mjs` / `.cjs`) — requires ESLint
+  `>=8.21` or any 9.x release.
+- **Legacy config** (`.eslintrc.*`) — supported on all of ESLint 7, 8, and 9.
+
+By default esplint picks the format the same way the ESLint CLI does:
+
+1. an explicit `eslint.useFlatConfig` value in your esplint config, if set;
+2. otherwise the `ESLINT_USE_FLAT_CONFIG` environment variable, if set
+   (`"true"` / `"false"`);
+3. otherwise flat config is used when an `eslint.config.{js,mjs,cjs}` file is
+   present in the working directory, and legacy config otherwise.
+
+Most projects need no extra configuration. To force a mode, set it in your
+esplint config:
+
+```js
+// .esplintrc.js
+module.exports = {
+  surfaceArea: ["."],
+  rules: ["no-console"],
+  eslint: {
+    useFlatConfig: true,
+  },
+};
+```
 
 ## Git Conflicts
 
