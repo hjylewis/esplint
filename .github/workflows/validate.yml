@@ -16,16 +16,19 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [14.x, 16.x]
+        node-version: [18.x, 20.x, 22.x, 24.x]
+        eslint-version: [8, 9]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - name: Install ESLint ${{ matrix.eslint-version }}
+      run: npm install --no-save eslint@${{ matrix.eslint-version }}
     - run: npm test -- --coverage
-    - uses: codecov/codecov-action@v2
+    - uses: codecov/codecov-action@v4
