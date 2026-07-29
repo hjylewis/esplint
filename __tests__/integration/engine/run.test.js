@@ -3,9 +3,8 @@ const stripAnsi = require("strip-ansi");
 const { fixtureInit } = require("../util");
 jest.mock("../../../package.json", () => ({ version: "1.0.0" }));
 
-const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
-  "engine.run"
-);
+const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } =
+  fixtureInit("engine.run");
 
 log.log = jest.fn();
 log.error = jest.fn();
@@ -157,7 +156,7 @@ describe("engine.run", () => {
 
       const rewrittenRecord = readRecord(fixturePath);
       expect(rewrittenRecord.files).toEqual({
-        "src/main.js": { "no-console": 1 }
+        "src/main.js": { "no-console": 1 },
       });
     })
   );
@@ -230,7 +229,7 @@ describe("engine.run", () => {
     setup("increase-warning", async () => {
       const { run } = require("../../../lib/engine");
       const { results, hasError } = await run({ overwrite: true }, [
-        "index.js"
+        "index.js",
       ]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -267,7 +266,7 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files["newFile.js"]).toEqual(undefined);
       expect(record.files["index.js"]).toEqual({
-        "no-console": 1
+        "no-console": 1,
       });
     })
   );
@@ -411,7 +410,7 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files["other.js"]).toEqual(undefined);
       expect(record.files["index.js"]).toEqual({
-        "no-console": 1
+        "no-console": 1,
       });
     })
   );
@@ -432,9 +431,63 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files).toEqual({
         "z.js": {
-          "no-console": 1
-        }
+          "no-console": 1,
+        },
       });
+    })
+  );
+
+  it(
+    "baselines a newly tracked rule instead of failing, keeping other baselines",
+    setup("add-tracked-rule", async ({ fixturePath }) => {
+      const { run } = require("../../../lib/engine");
+
+      // `eqeqeq` was just added to the config, so its existing violations are
+      // not a regression -- they become the baseline. Adding a rule must not
+      // require re-linting the whole surface area.
+      const { hasError } = await run({}, ["index.js"]);
+      expect(hasError).toEqual(false);
+
+      const record = readRecord(fixturePath);
+      expect(record.trackedRules).toEqual(["eqeqeq", "no-console"]);
+      expect(record.files["index.js"]).toEqual({
+        "no-console": 1,
+        eqeqeq: 1,
+      });
+    })
+  );
+
+  it(
+    "still fails when an already-tracked rule increases",
+    setup("add-tracked-rule", async () => {
+      const fs = require("fs");
+      const { run } = require("../../../lib/engine");
+
+      // Bump the already-tracked rule; this IS a regression.
+      fs.writeFileSync("index.js", "console.log();\nconsole.log();\n", "utf8");
+
+      const { results, hasError } = await run({}, ["index.js"]);
+      expect(hasError).toEqual(true);
+      expect(
+        results.some(
+          ({ type, message }) =>
+            type === "error" && stripAnsi(message).includes('"no-console"')
+        )
+      ).toEqual(true);
+    })
+  );
+
+  it(
+    "prunes rules that are no longer tracked",
+    setup("remove-tracked-rule", async ({ fixturePath }) => {
+      const { run } = require("../../../lib/engine");
+
+      const { hasError } = await run({}, ["index.js"]);
+      expect(hasError).toEqual(false);
+
+      const record = readRecord(fixturePath);
+      expect(record.trackedRules).toEqual(["no-console"]);
+      expect(record.files["index.js"]).toEqual({ "no-console": 1 });
     })
   );
 });
