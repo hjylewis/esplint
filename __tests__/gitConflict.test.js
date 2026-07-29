@@ -59,6 +59,32 @@ describe("resolveGitConflict", () => {
     });
   });
 
+  it("resolves a YAML conflict, keeping the higher count", () => {
+    // YAML is newline-significant, so the resolver must rejoin lines with
+    // newlines rather than concatenating them the way the JSON path could.
+    const yamlFormat = require("../lib/recordFormat").getFormat("yaml");
+    const file = [
+      "recordVersion: 1",
+      "configHash: h",
+      "files:",
+      "<<<<<<< HEAD",
+      "  a.js:",
+      "    no-console: 5",
+      "=======",
+      "  a.js:",
+      "    no-console: 3",
+      "  b.js:",
+      "    eqeqeq: 1",
+      ">>>>>>> branch",
+    ].join("\n");
+
+    const resolved = resolveGitConflict(file, yamlFormat);
+
+    expect(resolved.recordVersion).toEqual(1);
+    expect(resolved.files["a.js"]["no-console"]).toEqual(5);
+    expect(resolved.files["b.js"]).toEqual({ eqeqeq: 1 });
+  });
+
   it("preserves regions common to both sides", () => {
     const file = [
       "{",
