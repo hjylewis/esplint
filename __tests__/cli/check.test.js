@@ -24,10 +24,12 @@ beforeEach(() => {
 
   process.argv = [];
   process.exit.mockReset();
+  git().add.mockReset();
   log.error.mockReset();
   log.log.mockReset();
   log.warn.mockReset();
   log.createError.mockReset();
+  log.createSuccess.mockReset();
 });
 
 it("should strip ignore first two arguments of process.argv", () => {
@@ -47,7 +49,7 @@ it("should pass default options to engine", () => {
   cli([]);
 
   expect(run).toHaveBeenCalledWith(
-    { write: true, overwrite: false, stageRecordFile: false },
+    { write: true, overwrite: false, accept: false, stageRecordFile: false },
     expect.anything()
   );
 });
@@ -98,9 +100,31 @@ it("should print tip and exit with error code if there was an error", async () =
   await runPromise;
 
   expect(stripAnsi(log.log.mock.calls[0][0]).trim()).toEqual(
-    "Use the --overwrite flag to ignore these errors and force the record to be rewritten."
+    "Use the --accept flag to record these counts as the new baseline."
   );
   expect(process.exit).toHaveBeenCalledWith(1);
+});
+
+it("should pass --accept option to engine", () => {
+  cli(["--accept"]);
+
+  expect(run.mock.calls[0][0].accept).toEqual(true);
+});
+
+it("should show accepted message and stage record file when increases are accepted", async () => {
+  const runPromise = Promise.resolve({
+    results: [{ type: "error", message: "increased" }],
+    hasError: false,
+    accepted: true,
+  });
+  run.mockReturnValue(runPromise);
+  log.createSuccess.mockImplementation((i) => i);
+  cli(["--accept", "--stage-record-file"]);
+
+  await runPromise;
+
+  expect(log.createSuccess).toHaveBeenCalledWith("Accepted new baseline.");
+  expect(process.exit).not.toHaveBeenCalled();
 });
 
 it("should show success message if no errors", async () => {
