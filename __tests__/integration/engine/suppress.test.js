@@ -1,8 +1,7 @@
 const { fixtureInit } = require("../util");
 
-const { setup, readFile, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
-  "engine.suppress"
-);
+const { setup, readFile, onBeforeAll, onAfterEach, onAfterAll } =
+  fixtureInit("engine.suppress");
 
 describe("engine.suppress", () => {
   beforeAll(onBeforeAll);
@@ -19,14 +18,14 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console",
         'console.log("");',
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console",
-        'console.log("");'
+        'console.log("");',
       ]);
     })
   );
@@ -39,7 +38,7 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual(['console.log("");', 'console.log("");']);
     })
   );
@@ -50,17 +49,17 @@ describe("engine.suppress", () => {
       const { suppress } = require("../../../lib/engine");
       await suppress(["no-console"], ["."]);
 
-      ["index.js", "anotherFile.js"].forEach(filename => {
+      ["index.js", "anotherFile.js"].forEach((filename) => {
         const lines = readFile(fixturePath, filename)
           .split("\n")
-          .filter(l => l.length > 0);
+          .filter((l) => l.length > 0);
         expect(lines).toEqual([
           "// FIXME: The next line was auto suppressed by esplint",
           "// eslint-disable-next-line no-console",
           'console.log("");',
           "// FIXME: The next line was auto suppressed by esplint",
           "// eslint-disable-next-line no-console",
-          'console.log("");'
+          'console.log("");',
         ]);
       });
     })
@@ -74,11 +73,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console, no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -91,11 +90,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console, no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -108,14 +107,14 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "newFile.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "function newFile() {",
         "  // FIXME: The next line was auto suppressed by esplint",
         "  // eslint-disable-next-line no-console",
         "  console.log();",
         "}",
-        "newFile();"
+        "newFile();",
       ]);
     })
   );
@@ -128,11 +127,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -145,8 +144,30 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual(["undefinedGlobal;"]);
+    })
+  );
+
+  it(
+    "should use the esplint `eslint` options when suppressing",
+    setup("suppress-with-eslint-options", async ({ fixturePath }) => {
+      const { suppress } = require("../../../lib/engine");
+
+      // The rule being suppressed only exists in a custom `rulePaths`
+      // directory, so ESLint can't resolve it unless the user's `eslint`
+      // options are actually passed through. `overrideConfig` alone is not
+      // enough, which is why the other fixtures didn't catch this.
+      await suppress(["no-foo"], ["."]);
+
+      const lines = readFile(fixturePath, "index.js")
+        .split("\n")
+        .filter((l) => l.length > 0);
+      expect(lines).toEqual([
+        "// FIXME: The next line was auto suppressed by esplint",
+        "// eslint-disable-next-line no-foo",
+        "var foo = 1;",
+      ]);
     })
   );
 });

@@ -98,9 +98,19 @@ Run check and update record.
 
 The options are:
 
-- `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
+- `--since <ref>` — Only lint files changed since a git ref (e.g. `origin/master`), instead of the full surface area. Includes committed, staged, unstaged and untracked changes. Much faster on large projects.
+- `--changed` — Only lint files changed in the working tree.
+- `--accept` — Record the current counts as the new baseline, including increases. Unlike `--overwrite`, this only touches the files linted in this run, so it doesn't need to re-lint your whole project.
+- `--overwrite` — Ignore existing record file and re-generate it from scratch. Needed when `surfaceArea` or `eslint` options change.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 - `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
+
+To check just what a pull request touched, and accept any intentional increases:
+
+```sh
+$ esplint --since origin/master
+$ esplint --since origin/master --accept
+```
 
 ### `esplint stats`
 
@@ -122,6 +132,7 @@ module.exports = {
   eslint: { ... },
   rules: [ ... ],
   write: true,
+  recordFormat: "json",
 };
 ```
 
@@ -131,6 +142,27 @@ The options are:
 - `eslint` — ESLint class [options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+- `recordFormat` — `"json"` (default) or `"yaml"`. See [Record format](#record-format).
+
+## Record format
+
+By default the record is written as `.esplint.rec.json`. Setting `recordFormat: "yaml"`
+writes `.esplint.rec.yml` instead, which produces smaller, easier-to-review diffs: one
+rule per line with no trailing commas, so changing a single count changes exactly one
+line and adding a rule doesn't touch the line above it.
+
+esplint reads whichever record file it finds, so switching formats is safe — the old
+file is removed automatically on the next write, and the change doesn't invalidate your
+existing counts.
+
+## Changing your config
+
+Adding or removing a tracked rule doesn't invalidate the rest of your record. A newly
+tracked rule has no baseline yet, so its existing violations are recorded rather than
+reported as a regression, and a rule you stop tracking is pruned from the record.
+
+Changing `surfaceArea` or the `eslint` options can change counts in any file, so those
+still require `--overwrite`.
 
 ## Git Conflicts
 
