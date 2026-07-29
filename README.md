@@ -137,6 +137,15 @@ The options are:
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
 
+## Changing your config
+
+Adding or removing a tracked rule doesn't invalidate the rest of your record. A newly
+tracked rule has no baseline yet, so its existing violations are recorded rather than
+reported as a regression, and a rule you stop tracking is pruned from the record.
+
+Changing `surfaceArea` or the `eslint` options can change counts in any file, so those
+still require `--overwrite`.
+
 ## ESLint config support
 
 esplint supports ESLint 7, 8, and 9 and runs against whichever config format
