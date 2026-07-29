@@ -49,9 +49,28 @@ it("should pass default options to engine", () => {
   cli([]);
 
   expect(run).toHaveBeenCalledWith(
-    { write: true, overwrite: false, accept: false, stageRecordFile: false },
+    {
+      write: true,
+      overwrite: false,
+      accept: false,
+      stageRecordFile: false,
+      since: undefined,
+      changed: false,
+    },
     expect.anything()
   );
+});
+
+it("should pass --since option to engine", () => {
+  cli(["--since", "origin/master"]);
+
+  expect(run.mock.calls[0][0].since).toEqual("origin/master");
+});
+
+it("should pass --changed option to engine", () => {
+  cli(["--changed"]);
+
+  expect(run.mock.calls[0][0].changed).toEqual(true);
 });
 
 it("should pass --no-write option to engine", () => {
