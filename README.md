@@ -127,6 +127,7 @@ module.exports = {
   eslint: { ... },
   rules: [ ... ],
   write: true,
+  recordFormat: "json",
 };
 ```
 
@@ -136,6 +137,18 @@ The options are:
 - `eslint` — ESLint class [options](https://eslint.org/docs/latest/integrate/nodejs-api#-new-eslintoptions). esplint also accepts an esplint-specific `useFlatConfig` boolean here to force flat (`true`) or legacy/eslintrc (`false`) mode — see [ESLint config support](#eslint-config-support).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+- `recordFormat` — `"json"` (default) or `"yaml"`. See [Record format](#record-format).
+
+## Record format
+
+By default the record is written as `.esplint.rec.json`. Setting `recordFormat: "yaml"`
+writes `.esplint.rec.yml` instead, which produces smaller, easier-to-review diffs: one
+rule per line with no trailing commas, so changing a single count changes exactly one
+line and adding a rule doesn't touch the line above it.
+
+esplint reads whichever record file it finds, so switching formats is safe — the old
+file is removed automatically on the next write, and the change doesn't invalidate your
+existing counts.
 
 ## Changing your config
 
