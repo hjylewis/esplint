@@ -51,7 +51,7 @@
     "object-hash": "^3.0.0",
     "pkg-dir": "^5.0.0",
     "semver": "^7.3.5",
-    "simple-git": "^3.4.0",
+    "simple-git": "^4.0.1",
     "yargs": "^17.4.0"
   }
 }
