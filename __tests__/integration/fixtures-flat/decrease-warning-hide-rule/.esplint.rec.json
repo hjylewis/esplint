@@ -1,0 +1,10 @@
+{
+  "recordVersion": 1,
+  "configHash": "0b85c98c0ae3b0ecce8a5df19607c0296db1fafe",
+  "files": {
+    "index.js": {
+      "no-console": 1,
+      "for-direction": 1
+    }
+  }
+}

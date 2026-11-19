@@ -23,6 +23,11 @@ Install esplint as a dev dependency of your project.
 $ npm install esplint --save-dev
 ```
 
+esplint supports ESLint 7, 8, and 9, and works with both the new [flat
+config](https://eslint.org/docs/latest/use/configure/configuration-files)
+(`eslint.config.js`) and the legacy `.eslintrc.*` format. See
+[ESLint config support](#eslint-config-support).
+
 Create `.esplintrc.js` and add your [configurations](#configuration).
 
 ```js
@@ -128,9 +133,41 @@ module.exports = {
 The options are:
 
 - `surfaceArea` — An array of files and/or directories to track. Use `[ "." ]` to track all Javascript files in the current directory. These files and directories are used if no files or directories are specified from the CLI
-- `eslint` — ESLint class [options](https://eslint.org/docs/developer-guide/nodejs-api#-new-eslintoptions).
+- `eslint` — ESLint class [options](https://eslint.org/docs/latest/integrate/nodejs-api#-new-eslintoptions). esplint also accepts an esplint-specific `useFlatConfig` boolean here to force flat (`true`) or legacy/eslintrc (`false`) mode — see [ESLint config support](#eslint-config-support).
 - `rules` — An array of eslint rule names to track.
 - `write` — Corresponds to the negation of the `--no-write` CLI option. See [Command line options](#command-line-options).
+
+## ESLint config support
+
+esplint supports ESLint 7, 8, and 9 and runs against whichever config format
+your project uses:
+
+- **Flat config** (`eslint.config.*`) — requires ESLint `>=8.57` or any 9.x
+  release.
+- **Legacy config** (`.eslintrc.*`) — supported on all of ESLint 7, 8, and 9.
+
+esplint lets ESLint pick the format, so it matches what the `eslint` command
+does with the version you have installed:
+
+- **ESLint 9** uses flat config unless `ESLINT_USE_FLAT_CONFIG=false` is set.
+- **ESLint 8.57+** uses flat config if `ESLINT_USE_FLAT_CONFIG=true`, legacy
+  config if it is `false`, and otherwise flat config only when it finds an
+  `eslint.config.*` file in the working directory or a parent directory.
+- **Older ESLint versions** only support legacy config.
+
+To force a format, set `useFlatConfig` in your esplint config. For example, a
+project on ESLint 9 that still uses `.eslintrc.*`:
+
+```js
+// .esplintrc.js
+module.exports = {
+  surfaceArea: ["."],
+  rules: ["no-console"],
+  eslint: {
+    useFlatConfig: false,
+  },
+};
+```
 
 ## Git Conflicts
 

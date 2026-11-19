@@ -1,8 +1,10 @@
 const { fixtureInit } = require("../util");
 
-const { setup, readFile, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
-  "engine.suppress"
-);
+// These fixtures use eslintrc, which ESLint 9 only loads when asked to.
+process.env.ESLINT_USE_FLAT_CONFIG = "false";
+
+const { setup, readFile, onBeforeAll, onAfterEach, onAfterAll } =
+  fixtureInit("engine.suppress");
 
 describe("engine.suppress", () => {
   beforeAll(onBeforeAll);
@@ -19,14 +21,14 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console",
         'console.log("");',
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console",
-        'console.log("");'
+        'console.log("");',
       ]);
     })
   );
@@ -39,7 +41,7 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual(['console.log("");', 'console.log("");']);
     })
   );
@@ -50,17 +52,17 @@ describe("engine.suppress", () => {
       const { suppress } = require("../../../lib/engine");
       await suppress(["no-console"], ["."]);
 
-      ["index.js", "anotherFile.js"].forEach(filename => {
+      ["index.js", "anotherFile.js"].forEach((filename) => {
         const lines = readFile(fixturePath, filename)
           .split("\n")
-          .filter(l => l.length > 0);
+          .filter((l) => l.length > 0);
         expect(lines).toEqual([
           "// FIXME: The next line was auto suppressed by esplint",
           "// eslint-disable-next-line no-console",
           'console.log("");',
           "// FIXME: The next line was auto suppressed by esplint",
           "// eslint-disable-next-line no-console",
-          'console.log("");'
+          'console.log("");',
         ]);
       });
     })
@@ -74,11 +76,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console, no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -91,11 +93,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-console, no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -108,14 +110,14 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "newFile.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "function newFile() {",
         "  // FIXME: The next line was auto suppressed by esplint",
         "  // eslint-disable-next-line no-console",
         "  console.log();",
         "}",
-        "newFile();"
+        "newFile();",
       ]);
     })
   );
@@ -128,11 +130,11 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual([
         "// FIXME: The next line was auto suppressed by esplint",
         "// eslint-disable-next-line no-extra-semi",
-        'console.log("");;'
+        'console.log("");;',
       ]);
     })
   );
@@ -145,7 +147,7 @@ describe("engine.suppress", () => {
 
       const lines = readFile(fixturePath, "index.js")
         .split("\n")
-        .filter(l => l.length > 0);
+        .filter((l) => l.length > 0);
       expect(lines).toEqual(["undefinedGlobal;"]);
     })
   );
