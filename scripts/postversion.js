@@ -5,6 +5,9 @@ const execa = require("execa");
 async function updateExample() {
   process.chdir("./example");
 
+  // example/ uses eslintrc, which ESLint 9 only loads when asked to.
+  process.env.ESLINT_USE_FLAT_CONFIG = "false";
+
   // Update .esplint.rec.json
   const { run } = require("../lib/engine");
   await run(

@@ -3,9 +3,11 @@ const stripAnsi = require("strip-ansi");
 const { fixtureInit } = require("../util");
 jest.mock("../../../package.json", () => ({ version: "1.0.0" }));
 
-const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } = fixtureInit(
-  "engine.run"
-);
+// These fixtures use eslintrc, which ESLint 9 only loads when asked to.
+process.env.ESLINT_USE_FLAT_CONFIG = "false";
+
+const { setup, readRecord, onBeforeAll, onAfterEach, onAfterAll } =
+  fixtureInit("engine.run");
 
 log.log = jest.fn();
 log.error = jest.fn();
@@ -157,7 +159,7 @@ describe("engine.run", () => {
 
       const rewrittenRecord = readRecord(fixturePath);
       expect(rewrittenRecord.files).toEqual({
-        "src/main.js": { "no-console": 1 }
+        "src/main.js": { "no-console": 1 },
       });
     })
   );
@@ -230,7 +232,7 @@ describe("engine.run", () => {
     setup("increase-warning", async () => {
       const { run } = require("../../../lib/engine");
       const { results, hasError } = await run({ overwrite: true }, [
-        "index.js"
+        "index.js",
       ]);
       expect(hasError).toEqual(false);
       expect(results).toHaveLength(0);
@@ -267,7 +269,7 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files["newFile.js"]).toEqual(undefined);
       expect(record.files["index.js"]).toEqual({
-        "no-console": 1
+        "no-console": 1,
       });
     })
   );
@@ -411,7 +413,7 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files["other.js"]).toEqual(undefined);
       expect(record.files["index.js"]).toEqual({
-        "no-console": 1
+        "no-console": 1,
       });
     })
   );
@@ -432,8 +434,8 @@ describe("engine.run", () => {
       const record = readRecord(fixturePath);
       expect(record.files).toEqual({
         "z.js": {
-          "no-console": 1
-        }
+          "no-console": 1,
+        },
       });
     })
   );

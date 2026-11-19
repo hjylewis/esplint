@@ -3,9 +3,9 @@ const path = require("path");
 const fs = require("fs");
 const execa = require("execa");
 
-function fixtureInit(id) {
+function fixtureInit(id, fixtureSrcPath = "./__tests__/integration/fixtures") {
   const fixtureDir = `${os.tmpdir()}/esplint/${id}/fixtures`;
-  const fixtureSrc = path.resolve("./__tests__/integration/fixtures");
+  const fixtureSrc = path.resolve(fixtureSrcPath);
   const cwd = process.cwd();
 
   function getFixturePath(...args) {
