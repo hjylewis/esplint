@@ -16,9 +16,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x, 24.x]
+        node-version: [22.x, 24.x, 26.x]
         eslint-version: [7, 8, 9]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # Test against Current, Active LTS and Maintenance LTS lines: https://nodejs.org/en/about/previous-releases
 
     steps:
     - uses: actions/checkout@v4
