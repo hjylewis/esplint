@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.11.0](https://github.com/hjylewis/esplint/compare/v0.10.2...v0.11.0) (2026-11-20)
+
+
+### ⚠ BREAKING CHANGES
+
+* on ESLint 8.57+, esplint now uses flat config when an eslint.config.{js,mjs,cjs} file exists in the working directory or a parent directory, or when ESLINT_USE_FLAT_CONFIG=true. Earlier releases always used eslintrc on ESLint 8. Flat config lints *.mjs and *.cjs files by default and rejects eslintrc-only options such as `useEslintrc`, so an existing record can report new warnings or esplint can fail to start. To keep eslintrc, set `eslint.useFlatConfig: false` in the esplint config. That changes the record's config hash, so run `esplint --overwrite` once. `esplint suppress` also now honors the `eslint` options in the esplint config, which can change what it suppresses.
+
+Co-authored-by: Claude Opus 5.5 <noreply@anthropic.com>
+
+### Features
+
+* support ESLint 9 and flat config ([#147](https://github.com/hjylewis/esplint/issues/147)) ([601328a](https://github.com/hjylewis/esplint/commit/601328a30fb6fa8a2c33bd5281368ac3919ae5ba))
+
+
+### Bug Fixes
+
+* resolve minimatch and picomatch vulnerabilities ([#156](https://github.com/hjylewis/esplint/issues/156)) ([4f23a45](https://github.com/hjylewis/esplint/commit/4f23a45cf7443f0cff6db3cf964406ab3718eb4a))
+
 ### [0.10.2](https://github.com/hjylewis/esplint/compare/v0.10.1...v0.10.2) (2023-05-11)
 
 
