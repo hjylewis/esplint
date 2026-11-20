@@ -103,10 +103,19 @@ Run check and update record.
 
 The options are:
 
+- `--since <ref>` — Only lint files changed since a git ref (e.g. `origin/master`), instead of the full surface area. Includes committed, staged, unstaged and untracked changes. Much faster on large projects.
+- `--changed` — Only lint files changed in the working tree.
 - `--accept` — Record the current counts as the new baseline, including increases. Unlike `--overwrite`, this only touches the files linted in this run, so it doesn't need to re-lint your whole project.
 - `--overwrite` — Ignore existing record file and re-generate it from scratch.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 - `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
+
+To check just what a pull request touched, and accept any intentional increases:
+
+```sh
+$ esplint --since origin/master
+$ esplint --since origin/master --accept
+```
 
 ### `esplint stats`
 
