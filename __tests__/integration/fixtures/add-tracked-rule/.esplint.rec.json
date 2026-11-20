@@ -1,0 +1,10 @@
+{
+  "recordVersion": 1,
+  "configHash": "ed5666d33d7eada4793b414a60f6a2f5f9bdb812",
+  "trackedRules": ["no-console"],
+  "files": {
+    "index.js": {
+      "no-console": 1
+    }
+  }
+}

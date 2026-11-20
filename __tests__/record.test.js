@@ -27,6 +27,46 @@ describe("createRecord", () => {
     });
     expect(Object.keys(files)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);
   });
+
+  it("records the tracked rules, sorted", () => {
+    const { trackedRules } = createRecord({
+      config: {
+        rules: ["no-console", "eqeqeq"],
+        __originalConfig: { rules: ["no-console", "eqeqeq"] },
+      },
+      files: {},
+    });
+    expect(trackedRules).toEqual(["eqeqeq", "no-console"]);
+  });
+
+  it("hashes only count-affecting config, ignoring unrelated keys", () => {
+    const base = { surfaceArea: ["."], eslint: {}, rules: ["no-console"] };
+    const hashOf = (originalConfig) =>
+      createRecord({
+        config: {
+          rules: originalConfig.rules,
+          __originalConfig: originalConfig,
+        },
+        files: {},
+      }).configHash;
+
+    // Changing the tracked rules must NOT change the hash: rules are tracked
+    // separately so adding one doesn't invalidate the other rules' baselines.
+    expect(hashOf({ ...base, rules: ["no-console", "eqeqeq"] })).toEqual(
+      hashOf(base)
+    );
+
+    // Neither should a key that can't affect counts.
+    expect(hashOf({ ...base, write: false })).toEqual(hashOf(base));
+
+    // But surfaceArea and eslint options can change counts anywhere.
+    expect(hashOf({ ...base, surfaceArea: ["./src"] })).not.toEqual(
+      hashOf(base)
+    );
+    expect(hashOf({ ...base, eslint: { ignore: false } })).not.toEqual(
+      hashOf(base)
+    );
+  });
 });
 
 describe("unifyFilePaths", () => {
