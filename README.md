@@ -103,7 +103,8 @@ Run check and update record.
 
 The options are:
 
-- `--overwrite` — Ignore existing record file. Useful to bypass the esplint check and force an increase in the number of warnings.
+- `--accept` — Record the current counts as the new baseline, including increases. Unlike `--overwrite`, this only touches the files linted in this run, so it doesn't need to re-lint your whole project.
+- `--overwrite` — Ignore existing record file and re-generate it from scratch.
 - `--no-write` — Only perform warning count check and don't update the record file if the warning count goes down.
 - `--stage-record-file` — After esplint succeeds, this will git add the record file. This is helpful when running esplint on a pre-commit hook.
 
