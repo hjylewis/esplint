@@ -151,4 +151,26 @@ describe("engine.suppress", () => {
       expect(lines).toEqual(["undefinedGlobal;"]);
     })
   );
+
+  it(
+    "should use the esplint `eslint` options when suppressing",
+    setup("suppress-with-eslint-options", async ({ fixturePath }) => {
+      const { suppress } = require("../../../lib/engine");
+
+      // The rule being suppressed only exists in a custom `rulePaths`
+      // directory, so ESLint can't resolve it unless the user's `eslint`
+      // options are actually passed through. `overrideConfig` alone is not
+      // enough, which is why the other fixtures didn't catch this.
+      await suppress(["no-foo"], ["."]);
+
+      const lines = readFile(fixturePath, "index.js")
+        .split("\n")
+        .filter((l) => l.length > 0);
+      expect(lines).toEqual([
+        "// FIXME: The next line was auto suppressed by esplint",
+        "// eslint-disable-next-line no-foo",
+        "var foo = 1;",
+      ]);
+    })
+  );
 });
