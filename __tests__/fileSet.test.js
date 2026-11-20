@@ -280,4 +280,33 @@ describe("sortFileSet", () => {
 
     expect(Object.keys(result)).toEqual(["a/b/c", "b/b/c", "z/a/c"]);
   });
+
+  it("sorts rule keys within each file", () => {
+    fs.existsSync.mockReturnValue(true);
+
+    // Rule order otherwise follows lint order, so unrelated runs could
+    // reshuffle lines and create noisy diffs.
+    const result = sortFileSet({
+      "a.js": {
+        "no-console": 1,
+        "@typescript-eslint/require-await": 2,
+        eqeqeq: 3,
+      },
+    });
+
+    expect(Object.keys(result["a.js"])).toEqual([
+      "@typescript-eslint/require-await",
+      "eqeqeq",
+      "no-console",
+    ]);
+  });
+
+  it("is stable regardless of input rule order", () => {
+    fs.existsSync.mockReturnValue(true);
+
+    const a = sortFileSet({ "a.js": { b: 1, a: 2 } });
+    const b = sortFileSet({ "a.js": { a: 2, b: 1 } });
+
+    expect(JSON.stringify(a)).toEqual(JSON.stringify(b));
+  });
 });
